@@ -1,0 +1,40 @@
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>VibenChat</title>
+    <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+    <header>
+        <h1 class="title">Unwind with <strong>VibenChat</strong>: Chat Rooms with Beats</h1>
+        <div class="right-nav">
+            <a href = "/register/"><span class="register-button">Register</span></a>
+            <a href="/login/"><span class ="login-button">Login</span></a>
+        </div>
+    </header>
+    <main class="main-page-container">
+        <section class="playlist-container">
+        </section>
+        <section class = "room-container">
+            <form>
+                <select>
+                    <option name="Pop">Pop Music</option>
+                    <option name="Hip hop">Hip Hop</option>
+                    <option name="Rock">Rock</option>
+                </select>
+                <input type="text" id="room-name" name="room-name">
+                <input type="submit" value="Submit">
+            </form>
+
+            <div th:each="room: ${roomList}">
+                <div class="room-card-left">
+                </div>
+                <div class="room-card-right">
+
+                </div>
+
+            </div>
+        </section>
+    </main>
+</body>
+</html>

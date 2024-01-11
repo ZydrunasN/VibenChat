@@ -3,7 +3,7 @@ package lt.vibenchat.demo.pojo;
 import jakarta.persistence.*;
 import lombok.*;
 
-@Entity(name = "user_music")
+@Entity(name = "room_user")
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
@@ -15,6 +15,6 @@ public class RoomUserPojo {
     private Long id;
     @Column(name = "user_id")
     private Long userId;
-    @Column(name = "music_id")
-    private Long musicID;
+    @Column(name = "room_id")
+    private Long roomId;
 }

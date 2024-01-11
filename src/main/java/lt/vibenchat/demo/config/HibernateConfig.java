@@ -19,7 +19,7 @@ public class HibernateConfig {
         configuration.addAnnotatedClass(UserMusicPojo.class);
         configuration.addAnnotatedClass(RoomUserPojo.class);
         configuration.addAnnotatedClass(MusicPojo.class);
-        configuration.addAnnotatedClass(RoomPojo.class);
+        configuration.addAnnotatedClass(Room.class);
         configuration.addAnnotatedClass(UserPojo.class);
 
         return configuration;

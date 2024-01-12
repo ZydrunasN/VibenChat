@@ -1,4 +1,4 @@
-package lt.vibenchat.demo.dao;
+package lt.vibenchat.demo.repository;
 
 import lt.vibenchat.demo.pojo.Room;
 

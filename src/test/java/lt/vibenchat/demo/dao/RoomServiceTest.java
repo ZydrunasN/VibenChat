@@ -1,5 +1,4 @@
 package lt.vibenchat.demo.dao;
 
-
-public class RoomDaoTest {
+public class RoomServiceTest {
 }

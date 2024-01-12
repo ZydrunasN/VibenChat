@@ -15,12 +15,12 @@ public class HibernateConfig {
         configuration.setProperty("hibernate.show_sql", "true");
         configuration.setProperty("hibernate.hbm2ddl.auto", "update");
 
-        configuration.addAnnotatedClass(ChatMessagePojo.class);
-        configuration.addAnnotatedClass(UserMusicPojo.class);
-        configuration.addAnnotatedClass(RoomUserPojo.class);
-        configuration.addAnnotatedClass(MusicPojo.class);
+        configuration.addAnnotatedClass(ChatMessage.class);
+        configuration.addAnnotatedClass(UserMusic.class);
+        configuration.addAnnotatedClass(RoomUser.class);
+        configuration.addAnnotatedClass(Music.class);
         configuration.addAnnotatedClass(Room.class);
-        configuration.addAnnotatedClass(UserPojo.class);
+        configuration.addAnnotatedClass(User.class);
 
         return configuration;
     }

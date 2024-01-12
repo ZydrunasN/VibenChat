@@ -9,7 +9,7 @@ import lombok.*;
 @Builder
 @Getter
 @Setter
-public class UserMusicPojo {
+public class UserMusic {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;

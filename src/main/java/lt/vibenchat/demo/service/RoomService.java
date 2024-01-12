@@ -2,12 +2,14 @@ package lt.vibenchat.demo.service;
 
 import lt.vibenchat.demo.dao.RoomDao;
 import lt.vibenchat.demo.pojo.Room;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.UUID;
 
+@Service
 public class RoomService {
-    RoomDao roomDao;
+    private final RoomDao roomDao;
 
     public RoomService(RoomDao roomDao) {
         this.roomDao = roomDao;

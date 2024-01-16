@@ -1,0 +1,28 @@
+package lt.vibenchat.demo.controller;
+
+import lt.vibenchat.demo.pojo.Room;
+import lt.vibenchat.demo.service.RoomService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+
+import java.util.List;
+
+@Controller
+public class RoomController {
+    RoomService service;
+
+    @Autowired
+    public RoomController(RoomService service) {
+        this.service = service;
+    }
+
+    @PostMapping("/search-room")
+    public String SearchRoom(Model model, @RequestParam String genre, @RequestParam(name = "room-name") String name) {
+        List<Room> rooms =  service.searchRoomsByNameAndGenre(name,genre);
+        model.addAttribute("roomList",rooms);
+        return "pages/index";
+    }
+}

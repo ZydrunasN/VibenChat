@@ -1,5 +1,6 @@
 package lt.vibenchat.demo.dao;
 
+import lt.vibenchat.demo.pojo.Room;
 import lt.vibenchat.demo.pojo.User;
 import lt.vibenchat.demo.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,7 +10,7 @@ import java.util.List;
 
 @Repository
 public class UserDao implements CommonDaoActions<User>{
-    UserRepository repository;
+    private final UserRepository repository;
 
     @Autowired
     public UserDao(UserRepository repository) {

@@ -11,7 +11,7 @@ import java.util.UUID;
 @Repository
 public class RoomDao implements CommonDaoActions<Room> {
 
-    RoomRepository repository;
+    private final RoomRepository repository;
 
     @Autowired
     public RoomDao(RoomRepository repository) {
@@ -20,7 +20,7 @@ public class RoomDao implements CommonDaoActions<Room> {
 
     @Override
     public void save(Room room) {
-        room.setRoomId(UUID.randomUUID());
+        room.setRoomId(UUID.randomUUID().toString());
         repository.save(room);
     }
 
@@ -44,11 +44,11 @@ public class RoomDao implements CommonDaoActions<Room> {
         repository.deleteById(id);
     }
 
-    public Room getByUUID(UUID roomId) {
+    public Room getByUUID(String roomId) {
         return repository.getByRoomId(roomId);
     }
 
-    public void deleteByUUID(UUID roomId) {
+    public void deleteByUUID(String roomId) {
         repository.deleteByRoomId(roomId);
     }
 }

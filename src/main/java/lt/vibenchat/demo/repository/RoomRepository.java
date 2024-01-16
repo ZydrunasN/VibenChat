@@ -9,6 +9,6 @@ import java.util.UUID;
 
 @Repository
 public interface RoomRepository  extends JpaRepository<Room,Long>{
-    Room getByRoomId(UUID id);
-    void deleteByRoomId(UUID id);
+    Room getByRoomId(String id);
+    void deleteByRoomId(String id);
 }

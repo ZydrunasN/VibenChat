@@ -17,7 +17,6 @@ public class HibernateConfig {
 
         configuration.addAnnotatedClass(ChatMessage.class);
         configuration.addAnnotatedClass(UserMusic.class);
-        configuration.addAnnotatedClass(RoomUser.class);
         configuration.addAnnotatedClass(Music.class);
         configuration.addAnnotatedClass(Room.class);
         configuration.addAnnotatedClass(User.class);

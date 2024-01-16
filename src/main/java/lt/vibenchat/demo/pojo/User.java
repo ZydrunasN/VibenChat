@@ -18,4 +18,7 @@ public class User {
     @Column (name = "hashed_password")
     private String hashedPassword;
     private String salt;
+
+    @OneToOne(mappedBy = "user")
+    private Room room;
 }

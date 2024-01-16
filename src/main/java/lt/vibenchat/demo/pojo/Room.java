@@ -14,12 +14,14 @@ import java.util.UUID;
 public class Room {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-    @Column(name = "room_id")
-    private UUID roomId;
+    private long id;
     private String name;
-    @Column(name = "admin_id")
-    private Long adminId;
     @Column(name = "music_genre")
     private String genre;
+    @Column(name = "room_id")
+    private String roomId;
+
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JoinColumn(name = "admin_id")
+    private User user;
 }

@@ -1,5 +1,6 @@
 package lt.vibenchat.demo.controller;
 
+import lt.vibenchat.demo.dto.RoomDto;
 import lt.vibenchat.demo.pojo.Room;
 import lt.vibenchat.demo.service.RoomService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,7 +13,7 @@ import java.util.List;
 
 @Controller
 public class RoomController {
-    RoomService service;
+        private final RoomService service;
 
     @Autowired
     public RoomController(RoomService service) {
@@ -21,7 +22,7 @@ public class RoomController {
 
     @PostMapping("/search-room")
     public String SearchRoom(Model model, @RequestParam String genre, @RequestParam(name = "room-name") String name) {
-        List<Room> rooms =  service.searchRoomsByNameAndGenre(name,genre);
+        List<RoomDto> rooms =  service.searchRoomsByNameAndGenre(name,genre);
         model.addAttribute("roomList",rooms);
         return "pages/index";
     }

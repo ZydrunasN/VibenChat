@@ -1,45 +1,47 @@
 package lt.vibenchat.demo.service;
 
+import lt.vibenchat.demo.Mapper;
 import lt.vibenchat.demo.dao.RoomDao;
-import lt.vibenchat.demo.pojo.Room;
+import lt.vibenchat.demo.dto.RoomDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Service
 public class RoomService {
-    RoomDao roomDao;
+    private final RoomDao roomDao;
+    private final Mapper mapper;
 
     @Autowired
-    public RoomService(RoomDao roomDao) {
+    public RoomService(RoomDao roomDao, Mapper mapper) {
         this.roomDao = roomDao;
+        this.mapper = mapper;
     }
 
-    public void createRoom(Room room) {
-        roomDao.save(room);
+    public void createRoom(RoomDto roomDto) {
+        roomDao.save(mapper.toRoom(roomDto));
     }
 
-    public void updateRoom(Room room) {
-        roomDao.save(room);
+    public void updateRoom(RoomDto roomDto) {
+        roomDao.save(mapper.toRoom(roomDto));
     }
 
-    public List<Room> getListOfRooms() {
-        return roomDao.getAll();
+    public List<RoomDto> getListOfRooms() {
+        return roomDao.getAll().stream().map(mapper::toRoomDto).toList();
     }
 
-    public Room getRoomByUUID(String roomId) {
-        return roomDao.getByUUID(roomId);
+    public RoomDto getRoomByUUID(String roomUUID) {
+        return mapper.toRoomDto(roomDao.getByUUID(roomUUID));
     }
 
-    public void deleteRoomByUUID(String roomId) {
-        roomDao.deleteByUUID(roomId);
+    public void deleteRoomByUUID(String roomUUID) {
+        roomDao.deleteByUUID(roomUUID);
     }
 
-    public List<Room> searchRoomsByNameAndGenre(String name, String genre) {
-        List<Room> rooms = roomDao.getAll();
+    public List<RoomDto> searchRoomsByNameAndGenre(String name, String genre) {
+        List<RoomDto> rooms = roomDao.getAll().stream().map(mapper::toRoomDto).toList();
 
         if (name == null) {
              return rooms.stream()
@@ -53,7 +55,7 @@ public class RoomService {
         }
     }
 
-    public Room getRoomById(Long id) {
-        return roomDao.getByID(id);
+    public RoomDto getRoomById(Long id) {
+        return mapper.toRoomDto(roomDao.getByID(id));
     }
 }

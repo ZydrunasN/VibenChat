@@ -3,8 +3,6 @@ package lt.vibenchat.demo.pojo;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.util.UUID;
-
 @Entity(name = "room")
 @NoArgsConstructor
 @AllArgsConstructor
@@ -19,7 +17,7 @@ public class Room {
     @Column(name = "music_genre")
     private String genre;
     @Column(name = "room_id")
-    private String roomId;
+    private String roomUUID;
 
     @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinColumn(name = "admin_id")

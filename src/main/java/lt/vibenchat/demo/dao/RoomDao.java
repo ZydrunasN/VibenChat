@@ -20,7 +20,7 @@ public class RoomDao implements CommonDaoActions<Room> {
 
     @Override
     public void save(Room room) {
-        room.setRoomId(UUID.randomUUID().toString());
+        room.setRoomUUID(UUID.randomUUID().toString());
         repository.save(room);
     }
 
@@ -44,11 +44,11 @@ public class RoomDao implements CommonDaoActions<Room> {
         repository.deleteById(id);
     }
 
-    public Room getByUUID(String roomId) {
-        return repository.getByRoomId(roomId);
+    public Room getByUUID(String roomUUID) {
+        return repository.getByRoomUUID(roomUUID);
     }
 
-    public void deleteByUUID(String roomId) {
-        repository.deleteByRoomId(roomId);
+    public void deleteByUUID(String roomUUID) {
+        repository.deleteByRoomUUID(roomUUID);
     }
 }

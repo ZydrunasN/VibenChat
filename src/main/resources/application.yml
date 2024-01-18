@@ -10,14 +10,10 @@ spring:
     url: jdbc:mysql://localhost:3306/vibe
     username: dev
     password: password
-  sql:
-    init:
-      schema-locations: classpath:db/ddl.sql
-      data-locations: classpath:db/dml.sql
   jpa:
     hibernate:
       ddl-auto: none
-    show-sql: true
+    show-sql: false
     properties:
       hibernate:
         format_sql: true

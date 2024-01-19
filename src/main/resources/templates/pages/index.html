@@ -49,7 +49,8 @@
             <div class="bg-secondary rounded p-2">
                 <h2 th:text="#{rooms.title}">:</h2>
                 <form method="post" th:action="@{/search-room}">
-                    <select name="genre">
+                    <select name="genre" class="text-center">
+                        <option name="All">All</option>
                         <option name="Pop">Pop Music</option>
                         <option name="Hip hop">Hip Hop</option>
                         <option name="Rock">Rock</option>

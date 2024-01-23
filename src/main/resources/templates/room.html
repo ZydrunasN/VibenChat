@@ -8,12 +8,12 @@
 </head>
 
 <body>
-<header class="Container-fluid my-1 bg-secondary cont">
+<header class="Container my-1 bg-secondary">
     <div class="row">
         <div class="col-md-8">
             <h1 class="title" th:text="#{home.title}"></h1>
         </div>
-        <div class="col-md-4 d-flex flex-column text-end">
+        <div class="col-md-4 d-flex flex-column text-center">
             <div class="dropdown">
                 <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     <img src="/img/Flag_English.png" alt="English" class="flag">
@@ -37,7 +37,8 @@
 
 <main class="container-xxl px-4 cont">
     <div class="row gx-5 text-center">
-        <section class="col-xl-6">
+
+        <section class="col col-lg-4">
             <div class="bg-success rounded p-2">
                 <p>
                     An Unused Section
@@ -45,28 +46,18 @@
             </div>
         </section>
 
-        <section class = "col-xl-4">
-            <div class="bg-secondary rounded p-2">
-                <h2 th:text="#{rooms.title}">:</h2>
-                <form method="post" th:action="@{/search-room}">
-                    <select name="genre" class="text-center">
-                        <option name="All">All</option>
-                        <option name="Pop">Pop Music</option>
-                        <option name="Hip hop">Hip Hop</option>
-                        <option name="Rock">Rock</option>
-                    </select>
-                    <input type="text" name="room-name">
-                    <input type="submit" value="Search">
+        <section class="col col-m-auto">
+            <div class="bg-success rounded p-2">
+                <form method="post" th:action="@{/chat}">
+                    <textarea name="message" rows="2" cols="50"></textarea>
+                    <input type="submit" value="send">
                 </form>
+            </div>
+        </section>
 
-                <div class="d-flex justify-content-between bg-light p-1 my-1" th:each="room: ${roomList}">
-                    <div class="d-flex flex-column text-start col">
-                        <span th:text="${room.name}"><br/></span>
-                        <span th:text="${room.genre}"></span>
-                    </div>
-                    <div class="col">
-                    </div>
-                </div>
+        <section class = "col col-lg-3">
+            <div class="bg-secondary rounded p-2">
+                <h2 class="text-center">In Room:</h2>
             </div>
         </section>
     </div>

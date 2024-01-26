@@ -8,14 +8,14 @@
 </head>
 
 <body>
-<header class="Container my-1 bg-secondary">
+<header class="Container my-1 bg-second">
     <div class="row">
         <div class="col-md-8">
             <h1 class="title" th:text="#{home.title}"></h1>
         </div>
         <div class="col-md-4 d-flex flex-column text-center">
             <div class="dropdown">
-                <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <button class="btn btn-color dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     <img src="/img/Flag_English.png" alt="English" class="flag">
                 </button>
                 <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
@@ -39,7 +39,7 @@
     <div class="row gx-5 text-center">
 
         <section class="col col-lg-4">
-            <div class="bg-success rounded p-2">
+            <div class="bg-second rounded p-2">
                 <p>
                     An Unused Section
                 </p>
@@ -47,16 +47,47 @@
         </section>
 
         <section class="col col-m-auto">
-            <div class="bg-success rounded p-2">
+            <div class="chat-message">
                 <form method="post" th:action="@{/chat}">
                     <textarea name="message" rows="2" cols="50"></textarea>
                     <input type="submit" value="send">
                 </form>
+                <ul class="chat">
+                    <li class="left clearfix">
+                    	<span class="chat-img pull-left">
+                    		<img src="https://bootdey.com/img/Content/user_3.jpg" alt="User Avatar">
+                    	</span>
+                        <div class="chat-body clearfix">
+                            <div class="header">
+                                <strong class="primary-font">John Doe</strong>
+                                <small class="pull-right"><i class="fa fa-clock-o"></i> 12 mins ago</small>
+                            </div>
+                            <p>
+                                Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+                            </p>
+                        </div>
+                    </li>
+                    <li class="right clearfix">
+                    	<span class="chat-img pull-right">
+                    		<img src="https://bootdey.com/img/Content/user_1.jpg" alt="User Avatar">
+                    	</span>
+                        <div class="chat-body clearfix">
+                            <div class="header">
+                                <strong class="primary-font">Sarah</strong>
+                                <small class="pull-right"><i class="fa fa-clock-o"></i> 13 mins ago</small>
+                            </div>
+                            <p>
+                                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur bibendum ornare
+                                dolor, quis ullamcorper ligula sodales at.
+                            </p>
+                        </div>
+                    </li>
+                </ul>
             </div>
         </section>
 
         <section class = "col col-lg-3">
-            <div class="bg-secondary rounded p-2">
+            <div class="bg-second rounded p-2">
                 <h2 class="text-center">In Room:</h2>
             </div>
         </section>

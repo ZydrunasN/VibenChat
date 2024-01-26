@@ -3,6 +3,8 @@ package lt.vibenchat.demo.pojo;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.Set;
+
 @Entity(name = "user")
 @NoArgsConstructor
 @AllArgsConstructor
@@ -21,4 +23,7 @@ public class User {
 
     @OneToOne(mappedBy = "user")
     private Room room;
+
+    @OneToMany(mappedBy = "user")
+    Set<ChatMessage> chatMessageSet;
 }

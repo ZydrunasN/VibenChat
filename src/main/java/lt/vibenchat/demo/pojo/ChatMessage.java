@@ -8,11 +8,15 @@ public class ChatMessage {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Column(name = "room_id")
-    private Long roomId;
-    @Column(name = "user_id")
-    private Long userId;
     private LocalDateTime time;
     @Column(name = "message_text")
     private String messageText;
+
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JoinColumn(name="room_id")
+    private Room room;
+
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JoinColumn(name="user_id")
+    private User user;
 }

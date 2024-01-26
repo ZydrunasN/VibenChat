@@ -3,6 +3,8 @@ package lt.vibenchat.demo.pojo;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.Set;
+
 @Entity(name = "room")
 @NoArgsConstructor
 @AllArgsConstructor
@@ -22,4 +24,7 @@ public class Room {
     @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinColumn(name = "admin_id")
     private User user;
+
+    @OneToMany(mappedBy = "room")
+    private Set<ChatMessage> chatMessageSet;
 }

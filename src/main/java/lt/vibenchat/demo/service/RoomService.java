@@ -50,7 +50,6 @@ public class RoomService {
                 .collect(Collectors.toList());
 
         if (name.isEmpty() && !genre.equalsIgnoreCase("All")) {
-            System.out.println("veikia");
              return rooms.stream()
                      .filter(room -> room.getGenre().equals(genre))
                      .collect(Collectors.toList());
@@ -60,10 +59,10 @@ public class RoomService {
             return rooms.stream()
                     .filter(room -> room.getName().toLowerCase().contains(name.toLowerCase()))
                     .collect(Collectors.toList());
-        } else {
-            log.error("Room search failed!!");
-            return new ArrayList<>();
         }
+
+        log.error("Room search failed!!");
+        return new ArrayList<>();
     }
 
     public RoomDto getRoomById(Long id) {

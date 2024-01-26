@@ -7,7 +7,6 @@ import org.springframework.stereotype.Repository;
 
 import java.util.UUID;
 
-@Repository
 public interface RoomRepository  extends JpaRepository<Room,Long>{
     Room getByRoomUUID(String id);
     void deleteByRoomUUID(String id);

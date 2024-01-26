@@ -3,6 +3,7 @@ package lt.vibenchat.demo.dto;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import lt.vibenchat.demo.pojo.Room;
 import lt.vibenchat.demo.pojo.User;
 
@@ -10,6 +11,7 @@ import java.time.LocalDateTime;
 
 @Data
 @AllArgsConstructor
+@NoArgsConstructor
 @Builder
 public class ChatMessageDto {
     private LocalDateTime time;

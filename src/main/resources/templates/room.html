@@ -1,39 +1,8 @@
 <html xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html" lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>VibenChat</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
-    <link rel="stylesheet" href=/css/style.css>
-</head>
+<head th:replace="~{/fragments/layout:: head}"></head>
 
 <body>
-<header class="Container my-1 bg-second">
-    <div class="row">
-        <div class="col-md-8">
-            <h1 class="title" th:text="#{home.title}"></h1>
-        </div>
-        <div class="col-md-4 d-flex flex-column text-center">
-            <div class="dropdown">
-                <button class="btn btn-color dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    <img src="/img/Flag_English.png" alt="English" class="flag">
-                </button>
-                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                    <a class="dropdown-item" href="/?lang=LT">
-                        <img src="/img/Flag_Lithuania.png" alt="Lithuanian" class="flag">
-                    </a>
-                    <a class="dropdown-item" href="/?lang">
-                        <img src="/img/Flag_English.png" alt="English" class="flag">
-                    </a>
-                </div>
-            </div>
-            <div class="col-md4">
-                <a href = "/register/"><span class="register-button" th:text="#{home.register}"></span></a>
-                <a href="/login/"><span class ="login-button" th:text="#{home.login}"></span></a>
-            </div>
-        </div>
-    </div>
-</header>
+<header th:replace="~{/fragments/layout:: header}"></header>
 
 <main class="container-xxl px-4 cont">
     <div class="row gx-5 text-center">

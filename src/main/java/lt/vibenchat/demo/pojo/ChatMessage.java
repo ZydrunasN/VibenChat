@@ -1,9 +1,16 @@
 package lt.vibenchat.demo.pojo;
 
 import jakarta.persistence.*;
+import lombok.*;
+
 import java.time.LocalDateTime;
 
 @Entity(name = "chat_message")
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder
+@Setter
+@Getter
 public class ChatMessage {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

@@ -1,7 +1,9 @@
 package lt.vibenchat.demo;
 
+import lt.vibenchat.demo.dto.ChatMessageDto;
 import lt.vibenchat.demo.dto.RoomDto;
 import lt.vibenchat.demo.dto.UserDto;
+import lt.vibenchat.demo.pojo.ChatMessage;
 import lt.vibenchat.demo.pojo.Room;
 import lt.vibenchat.demo.pojo.User;
 import org.springframework.stereotype.Component;
@@ -15,7 +17,8 @@ public class Mapper {
                 user.getEmail(),
                 user.getHashedPassword(),
                 user.getSalt(),
-                user.getRoom()
+                user.getRoom(),
+                user.getChatMessageSet()
         );
     }
 
@@ -34,7 +37,8 @@ public class Mapper {
                 room.getName(),
                 room.getGenre(),
                 room.getRoomUUID(),
-                room.getUser()
+                room.getUser(),
+                room.getChatMessageSet()
         );
     }
 
@@ -44,6 +48,24 @@ public class Mapper {
                 .genre(roomDto.getGenre())
                 .roomUUID(roomDto.getRoomUUID())
                 .user(roomDto.getUser())
+                .build();
+    }
+
+    public ChatMessageDto toChatMessageDto(ChatMessage chatMessage) {
+        return new ChatMessageDto(
+                chatMessage.getTime(),
+                chatMessage.getMessageText(),
+                chatMessage.getRoom(),
+                chatMessage.getUser()
+        );
+    }
+
+    public ChatMessage toChatMessage(ChatMessageDto chatMessageDto) {
+        return ChatMessage.builder()
+                .time(chatMessageDto.getTime())
+                .messageText(chatMessageDto.getMessageText())
+                .room(chatMessageDto.getRoom())
+                .user(chatMessageDto.getUser())
                 .build();
     }
 }

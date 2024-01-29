@@ -11,8 +11,4 @@ public class MainController {
         return "index";
     }
 
-    @GetMapping("/register")
-    public String register() {
-        return "register";
-    }
 }

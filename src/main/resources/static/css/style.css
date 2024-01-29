@@ -13,6 +13,28 @@ body {
     color: white;
 }
 
+.title {
+    font-size: 25px;
+    margin: 0;
+}
+
+.room-card {
+    background-color: #0d4185;
+    border-radius: 5px;
+}
+
+select {
+    background-color: transparent;
+    color: white;
+    border-radius: 5px;
+    padding: 5px;
+}
+
+select option {
+    background-color: #16408E;
+
+}
+
 .bg-white {
     background-color: #fff;
 }

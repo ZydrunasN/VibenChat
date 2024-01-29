@@ -1,12 +1,13 @@
-<html xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html" lang="en">
+<html xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
 <head th:replace="~{/fragments/layout:: head}"></head>
 
 <body>
 <header th:replace="~{/fragments/layout:: header}"></header>
 
-<main class="container-xxl px-4 cont">
-    <div class="row gx-5 text-center">
-        <section class="col-xl-6">
+<main class="container-fluid px-4 cont">
+    <div class="row text-center gx-3">
+        <div class="col"></div>
+        <section class="col-lg-3">
             <div class="bg-second rounded p-2">
                 <p>
                     An Unused Section
@@ -14,38 +15,35 @@
             </div>
         </section>
 
-        <section class = "col-xl-4">
+        <section class = "col-lg-3">
             <div class="bg-second rounded p-3">
                 <h2 th:text="#{rooms.title}">:</h2>
                 <form method="post" th:action="@{/search-room}">
+                    <input class="mb-3" type="text" name="room-name">
                     <select name="genre" class="text-center">
                         <option name="All">All</option>
                         <option name="Pop">Pop Music</option>
                         <option name="Hip hop">Hip Hop</option>
                         <option name="Rock">Rock</option>
                     </select>
-                    <input type="text" name="room-name">
                     <input type="submit" value="Search">
                 </form>
 
-                <div class="d-flex justify-content-between bg-light p-1 my-1" th:each="room: ${roomList}">
+                <div class="room-card d-flex justify-content-between p-1 my-1" th:each="room: ${roomList}">
                     <a th:href="@{/room/{roomId}/(roomId=${room.roomUUID})}">
                         <div class="d-flex flex-column text-start col">
-                            <span th:text="${room.name}"><br/></span>
+                            <span class="border-bottom" th:text="${room.name}"><br/></span>
                             <span th:text="${room.genre}"></span>
                         </div>
                     </a>
-                    <div class="col">
-                    </div>
+
                 </div>
             </div>
         </section>
+        <div class="col"></div>
     </div>
 </main>
 
-<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
-<script src="https://cdn.jsdelivr.net/npm/popper.js@1.14.3/dist/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.1.3/dist/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
 </body>
 
 </html>

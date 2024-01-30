@@ -1,27 +1,25 @@
 package lt.vibenchat.demo.service;
 
 import lombok.extern.log4j.Log4j2;
-import lt.vibenchat.demo.Mapper;
+import lt.vibenchat.demo.mapper.EntityMapper;
 import lt.vibenchat.demo.dao.RoomDao;
-import lt.vibenchat.demo.dto.RoomDto;
+import lt.vibenchat.demo.dto.entityDto.RoomDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
 @Service
 @Log4j2
 public class RoomService {
     private final RoomDao roomDao;
-    private final Mapper mapper;
+    private final EntityMapper mapper;
 
     @Autowired
-    public RoomService(RoomDao roomDao, Mapper mapper) {
+    public RoomService(RoomDao roomDao, EntityMapper entityMapper) {
         this.roomDao = roomDao;
-        this.mapper = mapper;
+        this.mapper = entityMapper;
     }
 
     public void createRoom(RoomDto roomDto) {
@@ -62,7 +60,7 @@ public class RoomService {
         }
 
         log.error("Room search failed!!");
-        return new ArrayList<>();
+        return rooms;
     }
 
     public RoomDto getRoomById(Long id) {

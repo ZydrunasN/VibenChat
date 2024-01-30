@@ -1,20 +1,20 @@
 package lt.vibenchat.demo.service;
 
-import lt.vibenchat.demo.Mapper;
+import lt.vibenchat.demo.mapper.EntityMapper;
 import lt.vibenchat.demo.dao.UserDao;
-import lt.vibenchat.demo.dto.UserDto;
+import lt.vibenchat.demo.dto.entityDto.UserDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
 public class UserService {
     private final UserDao userDao;
-    private final Mapper mapper;
+    private final EntityMapper mapper;
 
     @Autowired
-    public UserService(UserDao userDao, Mapper mapper) {
+    public UserService(UserDao userDao, EntityMapper entityMapper) {
         this.userDao = userDao;
-        this.mapper = mapper;
+        this.mapper = entityMapper;
     }
 
     public void createUser(UserDto userDto) {

@@ -1,9 +1,9 @@
 package lt.vibenchat.demo.service;
 
 import lombok.extern.log4j.Log4j2;
-import lt.vibenchat.demo.Mapper;
+import lt.vibenchat.demo.mapper.EntityMapper;
 import lt.vibenchat.demo.dao.ChatMessageDao;
-import lt.vibenchat.demo.dto.ChatMessageDto;
+import lt.vibenchat.demo.dto.entityDto.ChatMessageDto;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -13,11 +13,11 @@ import java.util.stream.Collectors;
 @Log4j2
 public class ChatMessageService {
     private final ChatMessageDao chatMessageDao;
-    private final Mapper mapper;
+    private final EntityMapper mapper;
 
-    public ChatMessageService(ChatMessageDao chatMessageDao, Mapper mapper) {
+    public ChatMessageService(ChatMessageDao chatMessageDao, EntityMapper entityMapper) {
         this.chatMessageDao = chatMessageDao;
-        this.mapper = mapper;
+        this.mapper = entityMapper;
     }
 
     public void createMessage(ChatMessageDto chatMessageDto) {

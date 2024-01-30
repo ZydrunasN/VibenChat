@@ -1,15 +1,15 @@
-package lt.vibenchat.demo;
+package lt.vibenchat.demo.mapper;
 
-import lt.vibenchat.demo.dto.ChatMessageDto;
-import lt.vibenchat.demo.dto.RoomDto;
-import lt.vibenchat.demo.dto.UserDto;
+import lt.vibenchat.demo.dto.entityDto.ChatMessageDto;
+import lt.vibenchat.demo.dto.entityDto.RoomDto;
+import lt.vibenchat.demo.dto.entityDto.UserDto;
 import lt.vibenchat.demo.pojo.ChatMessage;
 import lt.vibenchat.demo.pojo.Room;
 import lt.vibenchat.demo.pojo.User;
 import org.springframework.stereotype.Component;
 
 @Component
-public class Mapper {
+public class EntityMapper {
 
     public UserDto toUserDto(User user) {
         return new UserDto(

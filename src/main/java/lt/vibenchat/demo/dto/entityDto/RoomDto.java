@@ -1,4 +1,4 @@
-package lt.vibenchat.demo.dto;
+package lt.vibenchat.demo.dto.entityDto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

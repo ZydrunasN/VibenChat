@@ -19,6 +19,11 @@ body {
     margin: 0;
 }
 
+.form-error {
+    color: red;
+    font-weight: bold;
+}
+
 .room-card {
     background-color: #0d4185;
     border-radius: 5px;
@@ -244,7 +249,7 @@ input[type="text"], input[type="email"], input[type="password"] {
     font-family: 'Roboto', sans-serif;
 }
 
-input.email, input.text.w3lpass {
+input.email, input.text.pass {
     margin: 2em 0;
 }
 

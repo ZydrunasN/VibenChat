@@ -1,7 +1,6 @@
 package lt.vibenchat.demo.controller;
 
-import lt.vibenchat.demo.dto.RoomDto;
-import lt.vibenchat.demo.pojo.Room;
+import lt.vibenchat.demo.dto.entityDto.RoomDto;
 import lt.vibenchat.demo.service.RoomService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;

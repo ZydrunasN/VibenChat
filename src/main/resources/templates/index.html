@@ -32,8 +32,8 @@
                 <div class="room-card d-flex justify-content-between p-1 my-1" th:each="room: ${roomList}">
                     <a th:href="@{/room/{roomId}/(roomId=${room.roomUUID})}">
                         <div class="d-flex flex-column text-start col">
-                            <span class="border-bottom" th:text="${room.name}"><br/></span>
-                            <span th:text="${room.genre}"></span>
+                            <span class="border-bottom room-item" th:text="${room.name}"><br/></span>
+                            <span class="room-item" th:text="${room.genre}"></span>
                         </div>
                     </a>
 

@@ -8,12 +8,14 @@
     <div class="main-w3layouts wrapper">
         <div class="main-agileinfo">
             <div class="agileits-top login">
-                <form method="post">
-                    <input class="text" type="text" name="Username" placeholder="Username" required="">
-                    <input class="text" type="password" name="password" placeholder="Password" required="">
+                <form method="post" th:action="@{/login}" th:object="${loginUserDto}">
+                    <input class="text" type="text" th:field="*{username}" placeholder="Username" required="">
+                    <span th:if="${#fields.hasErrors('username')}" th:errors="*{username}" th:errorclass="form-error"></span>
+                    <input class="text" type="password" th:field="*{password}" placeholder="Password" required="">
+                    <span th:if="${#fields.hasErrors('password')}" th:errors="*{password}" th:errorclass="form-error"></span>
                     <input type="submit" value="LOGIN">
                 </form>
-                <p>Don't have an Account? <a href="/register"> Sign up!</a></p>
+                <p>Don't have an Account? <a th:href="@{/register}"> Sign up!</a></p>
             </div>
         </div>
         <!-- copyright -->

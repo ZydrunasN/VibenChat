@@ -1,12 +1,12 @@
 package lt.vibenchat.demo.controller;
 
 import jakarta.validation.Valid;
+import lt.vibenchat.demo.dto.inputValidateDto.LoginUserDto;
 import lt.vibenchat.demo.dto.inputValidateDto.RegisterUserDto;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 
 @Controller
@@ -19,7 +19,8 @@ public class UserController {
     }
 
     @GetMapping("/login")
-    public String login() {
+    public String login(Model model) {
+        model.addAttribute("loginUserDto", LoginUserDto.builder().build());
         return "login";
     }
 
@@ -32,7 +33,10 @@ public class UserController {
     }
 
     @PostMapping("/login")
-    public String loginUser() {
-        return "index";
+    public String loginUser (@Valid LoginUserDto loginUserDto, BindingResult errors, Model model) {
+        if(errors.hasErrors()) {
+            return "login";
+        }
+        return "redirect:";
     }
 }

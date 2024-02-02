@@ -249,8 +249,16 @@ input[type="text"], input[type="email"], input[type="password"] {
     font-family: 'Roboto', sans-serif;
 }
 
-input.email, input.text.pass {
+input.email {
     margin: 2em 0;
+}
+
+.pass input{
+    margin-top: 2em;
+}
+
+.pass {
+    margin-bottom: 2em;
 }
 
 .text:focus, .text:valid {

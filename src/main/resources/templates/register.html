@@ -11,17 +11,18 @@
                 <form method="post" th:action="@{/register}" th:object="${registerUserDto}">
 
                     <input class="text" type="text" th:field="*{username}" placeholder="Username" required="">
-                    <span th:if="${#fields.hasErrors('username')}" th:errors="*{username}" th:errorclass="form-error">sadsad</span>
+                    <span th:if="${#fields.hasErrors('username')}" th:errors="*{username}" th:errorclass="form-error"></span>
 
                     <input class="text email" type="email" th:field="*{email}" placeholder="Email" required="">
-                    <span th:if="${#fields.hasErrors('email')}" th:errors="*{email}" th:errorclass="form-error">sadasd</span>
+                    <span th:if="${#fields.hasErrors('email')}" th:errors="*{email}" th:errorclass="form-error"></span>
 
                     <input class="text" type="password" th:field="*{password}" placeholder="Password" required="">
-                    <span th:if="${#fields.hasErrors('password')}" th:errors="*{password}" th:errorclass="form-error">sdasdasd</span>
+                    <span th:if="${#fields.hasErrors('password')}" th:errors="*{password}" th:errorclass="form-error"></span>
 
-                    <input class="text pass" type="password" th:field="*{confirmPassword}" placeholder="Confirm Password" required="">
-                    <span th:if="${#fields.hasErrors('confirmPassword')}" th:errors="*{confirmPassword}" th:errorclass="form-error">sdasdasd</span>
-
+                    <div class="pass">
+                        <input class="text" type="password" th:field="*{confirmPassword}" placeholder="Confirm Password" required="">
+                        <span th:if="${#fields.hasErrors('global')}" th:errors="*{global}" th:errorclass="form-error"></span>
+                    </div>
 
                     <div class="wthree-text">
                         <label class="anim">
@@ -32,7 +33,7 @@
                     </div>
                     <input type="submit" value="SIGNUP">
                 </form>
-                <p>Already have an Account? <a href="/login"> Login Now!</a></p>
+                <p>Already have an Account? <a th:href="@{/login}"> Login Now!</a></p>
             </div>
         </div>
         <!-- copyright -->

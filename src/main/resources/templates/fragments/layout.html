@@ -1,5 +1,7 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html" lang="en">
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      xmlns="http://www.w3.org/1999/html" lang="en">
 
 <head th:fragment="head">
     <meta charset="UTF-8">
@@ -37,8 +39,13 @@
             </div>
 
             <div class="col-md-5 text-end">
-                <a th:href="@{/login}" type="button" class="btn btn-primary me-2" th:text="#{home.login}">Login</a>
-                <a th:href="@{/register}" type="button" class="btn btn-primary" th:text="#{home.register}">Sign-up</a>
+                <a th:href="@{/login}" sec:authorize="isAnonymous()" type="button" class="btn btn-primary me-2" th:text="#{home.login}">Login</a>
+                <a th:href="@{/register}" sec:authorize="isAnonymous()" type="button" class="btn btn-primary" th:text="#{home.register}">Sign-up</a>
+                <div sec:authorize="isAuthenticated()">
+                    <span sec:authentication="principal.username" class="px-2"></span>
+                    <a th:href="@{/logout}"  type="button" class="btn btn-primary text-danger logout" th:text="#{home.logout}">Logout</a>
+                </div>
+
             </div>
         </div>
     </header>

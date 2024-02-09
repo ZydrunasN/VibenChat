@@ -13,6 +13,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 @Configuration
 @EnableWebSecurity
@@ -41,6 +42,11 @@ public class SecurityConfig {
                         .defaultSuccessUrl("/", true)
                         .usernameParameter("username")    //The HTTP parameter to look for the username
                         .passwordParameter("password") //The HTTP parameter to look for the password
+                ).logout(logoutConfigure -> logoutConfigure
+                        .logoutUrl("/logout")
+                        .logoutSuccessUrl("/")
+                        .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
+                        .permitAll()
                 ).build();
     }
 

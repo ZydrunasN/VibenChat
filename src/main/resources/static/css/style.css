@@ -19,6 +19,10 @@ body {
     margin: 0;
 }
 
+.logout {
+    font-weight: bold;
+}
+
 .form-error {
     color: red;
     font-weight: bold;

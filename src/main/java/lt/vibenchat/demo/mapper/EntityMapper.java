@@ -15,10 +15,10 @@ public class EntityMapper {
         return new UserDto(
                 user.getUsername(),
                 user.getEmail(),
-                user.getHashedPassword(),
-                user.getSalt(),
+                user.getPassword(),
                 user.getRoom(),
-                user.getChatMessageSet()
+                user.getChatMessageSet(),
+                user.getAuthorities()
         );
     }
 
@@ -26,8 +26,7 @@ public class EntityMapper {
         return User.builder()
                 .email(userDto.getEmail())
                 .username(userDto.getUsername())
-                .hashedPassword(userDto.getHashedPassword())
-                .salt(userDto.getSalt())
+                .password(userDto.getPassword())
                 .room(userDto.getRoom())
                 .build();
     }

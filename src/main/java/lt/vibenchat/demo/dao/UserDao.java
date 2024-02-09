@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public class UserDao implements CommonDaoActions<User>{
@@ -40,5 +41,9 @@ public class UserDao implements CommonDaoActions<User>{
     @Override
     public void deleteByID(Long id) {
         repository.deleteById(id);
+    }
+
+    public Optional<User> userByUsernameWithAuthorities(String username) {
+        return repository.findUserByUsernameWithAuthorities(username);
     }
 }

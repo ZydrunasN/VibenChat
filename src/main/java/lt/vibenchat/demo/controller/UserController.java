@@ -1,8 +1,12 @@
 package lt.vibenchat.demo.controller;
 
 import jakarta.validation.Valid;
-import lt.vibenchat.demo.dto.inputValidateDto.LoginUserDto;
-import lt.vibenchat.demo.dto.inputValidateDto.RegisterUserDto;
+import lt.vibenchat.demo.dto.entityDto.UserDto;
+import lt.vibenchat.demo.dto.inputValidateDto.user.LoginUserDto;
+import lt.vibenchat.demo.dto.inputValidateDto.user.RegisterUserDto;
+import lt.vibenchat.demo.service.UsersRegistrationService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -11,6 +15,13 @@ import org.springframework.web.bind.annotation.PostMapping;
 
 @Controller
 public class UserController {
+
+    UsersRegistrationService usersRegistrationService;
+
+    @Autowired
+    public UserController(UsersRegistrationService usersRegistrationService) {
+        this.usersRegistrationService = usersRegistrationService;
+    }
 
     @GetMapping("/register")
     public String register(Model model) {
@@ -26,10 +37,21 @@ public class UserController {
 
     @PostMapping("/register")
     public String registerUser(@Valid RegisterUserDto registerUserDto, BindingResult errors, Model model) {
-        if(errors.hasErrors()) {
-            return "register";
+        if (errors.hasErrors()) {
+            return "/register";
         }
-        return "index";
+        try {
+            usersRegistrationService.register(UserDto.builder()
+                    .password(registerUserDto.getPassword())
+                    .email(registerUserDto.getEmail())
+                    .username(registerUserDto.getUsername())
+                    .build());
+        } catch (DataIntegrityViolationException e) {
+            if (e.getMessage().contains("USERNAME")) {
+                errors.rejectValue("username", "Username is already used!");
+            }
+        }
+        return "redirect:";
     }
 
     @PostMapping("/login")

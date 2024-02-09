@@ -21,7 +21,7 @@ public class Room {
     @Column(name = "room_id")
     private String roomUUID;
 
-    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = "admin_id")
     private User user;
 

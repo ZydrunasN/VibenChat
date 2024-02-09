@@ -14,7 +14,7 @@ import java.util.List;
 
 @Controller
 public class RoomController {
-        private final RoomService service;
+    private final RoomService service;
 
     @Autowired
     public RoomController(RoomService service) {

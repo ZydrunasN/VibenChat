@@ -4,10 +4,13 @@ import lt.vibenchat.demo.mapper.EntityMapper;
 import lt.vibenchat.demo.dao.UserDao;
 import lt.vibenchat.demo.dto.entityDto.UserDto;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 @Service
-public class UserService {
+public class UserService implements UserDetailsService {
     private final UserDao userDao;
     private final EntityMapper mapper;
 
@@ -15,10 +18,6 @@ public class UserService {
     public UserService(UserDao userDao, EntityMapper entityMapper) {
         this.userDao = userDao;
         this.mapper = entityMapper;
-    }
-
-    public void createUser(UserDto userDto) {
-        userDao.save(mapper.toUser(userDto));
     }
 
     public void updateUser(UserDto userDto) {
@@ -31,5 +30,11 @@ public class UserService {
 
     public void deleteById(Long id) {
         userDao.deleteByID(id);
+    }
+
+    @Override
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        return userDao.userByUsernameWithAuthorities(username)
+                .orElseThrow(() -> new UsernameNotFoundException("'" + username + "' not found!"));
     }
 }

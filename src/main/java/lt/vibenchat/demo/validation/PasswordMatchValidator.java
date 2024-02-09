@@ -2,7 +2,7 @@ package lt.vibenchat.demo.validation;
 
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
-import lt.vibenchat.demo.dto.inputValidateDto.RegisterUserDto;
+import lt.vibenchat.demo.dto.inputValidateDto.user.RegisterUserDto;
 
 import java.util.Objects;
 

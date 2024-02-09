@@ -1,9 +1,7 @@
 package lt.vibenchat.demo.dto.entityDto;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
+import lt.vibenchat.demo.pojo.Authority;
 import lt.vibenchat.demo.pojo.ChatMessage;
 import lt.vibenchat.demo.pojo.Room;
 
@@ -16,8 +14,8 @@ import java.util.Set;
 public class UserDto {
     private String username;
     private String email;
-    private String hashedPassword;
-    private String salt;
+    private String password;
     private Room room;
     private Set<ChatMessage> chatMessageSet;
+    private Set<Authority> authorities;
 }

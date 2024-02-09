@@ -1,4 +1,4 @@
-package lt.vibenchat.demo.dto.inputValidateDto;
+package lt.vibenchat.demo.dto.inputValidateDto.user;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;

@@ -30,6 +30,10 @@ public class User implements UserDetails {
     @ManyToMany(cascade = CascadeType.PERSIST)
     private Set<Authority> authorities;
 
+    @Column(nullable = false)
+    @ManyToMany(cascade = CascadeType.PERSIST)
+    private Set<Music> music;
+
     @Override
     public String getPassword() {
         return password;

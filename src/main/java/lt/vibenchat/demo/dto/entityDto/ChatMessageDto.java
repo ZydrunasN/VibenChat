@@ -14,7 +14,9 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @Builder
 public class ChatMessageDto {
+    private Long id;
     private LocalDateTime time;
+    private Long passedTime;
     private String messageText;
     private Room room;
     private User user;

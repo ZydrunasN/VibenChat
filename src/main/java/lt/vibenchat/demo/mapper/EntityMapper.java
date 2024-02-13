@@ -51,12 +51,13 @@ public class EntityMapper {
     }
 
     public ChatMessageDto toChatMessageDto(ChatMessage chatMessage) {
-        return new ChatMessageDto(
-                chatMessage.getTime(),
-                chatMessage.getMessageText(),
-                chatMessage.getRoom(),
-                chatMessage.getUser()
-        );
+        return ChatMessageDto.builder()
+                .messageText(chatMessage.getMessageText())
+                .id(chatMessage.getId())
+                .time(chatMessage.getTime())
+                .room(chatMessage.getRoom())
+                .user(chatMessage.getUser())
+                .build();
     }
 
     public ChatMessage toChatMessage(ChatMessageDto chatMessageDto) {

@@ -9,9 +9,11 @@ import lt.vibenchat.demo.pojo.User;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
+import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
+import static java.util.Comparator.comparingLong;
 
 @Service
 @Log4j2
@@ -47,6 +49,20 @@ public class ChatMessageService {
         return chatMessageDao.getAll().stream()
                 .map(mapper::toChatMessageDto)
                 .collect(Collectors.toList());
+    }
+
+    public List<ChatMessageDto> getSortedListOfMessages() {
+        var sorted = getAllMessages().stream()
+                .sorted(comparingLong(ChatMessageDto::getId).reversed())
+                .collect(Collectors.toList());
+
+        for (int x = 0; x < sorted.size(); x++) {
+            var current = sorted.get(x);
+            current.setPassedTime(Duration.between(current.getTime(),LocalDateTime.now()).toMinutes());
+            sorted.set(x,current);
+        }
+
+        return sorted;
     }
 
     public void saveMessage(ChatMessageDto chatMessageDto, String roomId) {

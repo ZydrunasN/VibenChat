@@ -1,6 +1,5 @@
 package lt.vibenchat.demo.dao;
 
-import lt.vibenchat.demo.pojo.Room;
 import lt.vibenchat.demo.pojo.User;
 import lt.vibenchat.demo.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;

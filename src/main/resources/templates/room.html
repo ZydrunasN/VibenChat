@@ -17,8 +17,9 @@
 
         <section class="col col-m-auto">
             <div class="chat-message">
-                <form method="post" th:action="@{/chat}">
-                    <textarea name="message" rows="2" cols="50"></textarea>
+                <form method="post" th:action="@{chat}" th:object="${sendChatMessageDto}">
+                    <textarea th:field="*{messageText}" rows="2" cols="50"></textarea>
+                    <span th:if="${#fields.hasErrors('messageText')}" th:errors="*{messageText}" th:errorclass="form-error"></span>
                     <input type="submit" value="send">
                 </form>
                 <ul class="chat">

@@ -1,11 +1,15 @@
 package lt.vibenchat.demo.service;
 
 import lombok.extern.log4j.Log4j2;
+import lt.vibenchat.demo.dao.RoomDao;
 import lt.vibenchat.demo.mapper.EntityMapper;
 import lt.vibenchat.demo.dao.ChatMessageDao;
 import lt.vibenchat.demo.dto.entityDto.ChatMessageDto;
+import lt.vibenchat.demo.pojo.User;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -14,14 +18,12 @@ import java.util.stream.Collectors;
 public class ChatMessageService {
     private final ChatMessageDao chatMessageDao;
     private final EntityMapper mapper;
-
-    public ChatMessageService(ChatMessageDao chatMessageDao, EntityMapper entityMapper) {
+    private final RoomDao roomDao;
+    public ChatMessageService(ChatMessageDao chatMessageDao, EntityMapper entityMapper,
+                              RoomDao roomDao) {
         this.chatMessageDao = chatMessageDao;
         this.mapper = entityMapper;
-    }
-
-    public void createMessage(ChatMessageDto chatMessageDto) {
-        chatMessageDao.save(mapper.toChatMessage(chatMessageDto));
+        this.roomDao = roomDao;
     }
 
     public void updateMessage(ChatMessageDto chatMessageDto) {
@@ -45,5 +47,18 @@ public class ChatMessageService {
         return chatMessageDao.getAll().stream()
                 .map(mapper::toChatMessageDto)
                 .collect(Collectors.toList());
+    }
+
+    public void saveMessage(ChatMessageDto chatMessageDto, String roomId) {
+        var user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        var room = roomDao.getByUUID(roomId);
+
+        var chatMessage = mapper.toChatMessage(chatMessageDto);
+
+        chatMessage.setRoom(room);
+        chatMessage.setUser(user);
+        chatMessage.setTime(LocalDateTime.now());
+
+        chatMessageDao.save(chatMessage);
     }
 }

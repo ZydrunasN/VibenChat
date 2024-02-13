@@ -3,6 +3,7 @@ package lt.vibenchat.demo.pojo;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity(name = "room")
@@ -26,5 +27,5 @@ public class Room {
     private User user;
 
     @OneToMany(mappedBy = "room")
-    private Set<ChatMessage> chatMessageSet;
+    private Set<ChatMessage> chatMessageSet = new HashSet<>();
 }

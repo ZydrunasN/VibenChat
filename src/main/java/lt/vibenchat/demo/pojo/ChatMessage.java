@@ -23,7 +23,7 @@ public class ChatMessage {
     @JoinColumn(name="room_id")
     private Room room;
 
-    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.LAZY)
     @JoinColumn(name="user_id")
     private User user;
 }

@@ -3,6 +3,7 @@ package lt.vibenchat.demo.service;
 import lt.vibenchat.demo.mapper.EntityMapper;
 import lt.vibenchat.demo.dao.UserDao;
 import lt.vibenchat.demo.dto.entityDto.UserDto;
+import lt.vibenchat.demo.pojo.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -22,6 +23,10 @@ public class UserService implements UserDetailsService {
 
     public void updateUser(UserDto userDto) {
         userDao.save(mapper.toUser(userDto));
+    }
+
+    public void updateUser(User user) {
+        userDao.save(user);
     }
 
     public UserDto getUserById(Long id) {

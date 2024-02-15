@@ -5,6 +5,7 @@ import lt.vibenchat.demo.dao.RoomDao;
 import lt.vibenchat.demo.mapper.EntityMapper;
 import lt.vibenchat.demo.dao.ChatMessageDao;
 import lt.vibenchat.demo.dto.entityDto.ChatMessageDto;
+import lt.vibenchat.demo.pojo.ChatMessage;
 import lt.vibenchat.demo.pojo.User;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
@@ -51,8 +52,10 @@ public class ChatMessageService {
                 .collect(Collectors.toList());
     }
 
-    public List<ChatMessageDto> getSortedListOfMessages() {
-        var sorted = getAllMessages().stream()
+    public List<ChatMessageDto> getSortedListOfMessages(String roomUUID) {
+        var messageList = roomDao.getByUUID(roomUUID).getChatMessageSet().stream()
+                .map(mapper::toChatMessageDto).toList();
+        var sorted = messageList.stream()
                 .sorted(comparingLong(ChatMessageDto::getId).reversed())
                 .collect(Collectors.toList());
 

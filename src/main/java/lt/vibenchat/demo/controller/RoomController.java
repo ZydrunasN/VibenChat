@@ -39,7 +39,8 @@ public class RoomController {
     @GetMapping("/room/{roomId}/")
     public String room(Model model, @PathVariable String roomId) {
         model.addAttribute("sendChatMessageDto", SendChatMessageDto.builder().build());
-        model.addAttribute("chatMessageList",chatMessageService.getSortedListOfMessages());
+        model.addAttribute("chatMessageList",chatMessageService.getSortedListOfMessages(roomId));
+
         return "room";
     }
 

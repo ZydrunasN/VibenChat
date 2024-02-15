@@ -37,7 +37,8 @@ public class EntityMapper {
                 room.getGenre(),
                 room.getRoomUUID(),
                 room.getUser(),
-                room.getChatMessageSet()
+                room.getChatMessageSet(),
+                room.getMembers()
         );
     }
 

@@ -8,6 +8,7 @@ import lt.vibenchat.demo.service.ChatMessageService;
 import lt.vibenchat.demo.service.RoomService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -38,8 +39,13 @@ public class RoomController {
 
     @GetMapping("/room/{roomId}/")
     public String room(Model model, @PathVariable String roomId) {
+        if(!SecurityContextHolder.getContext().getAuthentication().getName().equals("anonymousUser")) {
+            roomService.addUserAsMember(roomId);
+        }
+
         model.addAttribute("sendChatMessageDto", SendChatMessageDto.builder().build());
         model.addAttribute("chatMessageList",chatMessageService.getSortedListOfMessages(roomId));
+        model.addAttribute("roomMemberList",roomService.getRoomByUUID(roomId).getMembers());
 
         return "room";
     }

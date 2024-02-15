@@ -47,6 +47,10 @@ body {
     color: white;
 }
 
+.bg-blue {
+    background-color: #0D6EFD;
+}
+
 .dropdown-item:hover {
     background-color: #0D6EFD;
     color: white;

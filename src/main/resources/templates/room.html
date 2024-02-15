@@ -32,9 +32,7 @@
                                 <strong class="primary-font" th:text="${message.user.username}"></strong>
                                 <small class="pull-right"><i class="fa fa-clock-o" th:text="${message.passedTime}"></i> mins ago</small>
                             </div>
-                            <p th:text="${message.messageText}">
-                                Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                            </p>
+                            <p th:text="${message.messageText}"></p>
                         </div>
                     </li>
 
@@ -47,10 +45,7 @@
                                 <strong class="primary-font" th:text="${message.user.username}"></strong>
                                 <small class="pull-right"><i class="fa fa-clock-o" th:text="${message.passedTime}"></i> mins ago</small>
                             </div>
-                            <p th:text="${message.messageText}">
-                                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur bibendum ornare
-                                dolor, quis ullamcorper ligula sodales at.
-                            </p>
+                            <p th:text="${message.messageText}"></p>
                         </div>
                     </li>
                 </ul>
@@ -60,6 +55,11 @@
         <section class = "col col-lg-3">
             <div class="bg-second rounded p-2">
                 <h2 class="text-center">In Room:</h2>
+                <div th:each="member: ${roomMemberList}">
+                    <div class="bg-blue mb-2 p-1 border">
+                        <span th:text="${member.username}"></span>
+                    </div>
+                </div>
             </div>
         </section>
     </div>

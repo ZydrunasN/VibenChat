@@ -26,6 +26,10 @@ public class User implements UserDetails {
     @OneToMany(mappedBy = "user")
     Set<ChatMessage> chatMessageSet;
 
+    @ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+    @JoinColumn(name = "member_room_id")
+    private Room memberRoom;
+
     @Column(nullable = false)
     @ManyToMany(cascade = CascadeType.PERSIST)
     private Set<Authority> authorities;

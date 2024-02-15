@@ -15,7 +15,7 @@ import java.util.Set;
 public class Room {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private Long id;
     private String name;
     @Column(name = "music_genre")
     private String genre;
@@ -28,4 +28,7 @@ public class Room {
 
     @OneToMany(mappedBy = "room")
     private Set<ChatMessage> chatMessageSet = new HashSet<>();
+
+    @OneToMany(mappedBy = "memberRoom")
+    private Set<User> members = new HashSet<>();
 }

@@ -17,4 +17,5 @@ public class RoomDto {
     private String roomUUID;
     private User user;
     private Set<ChatMessage> chatMessageSet;
+    private Set<User> members;
 }

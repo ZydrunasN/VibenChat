@@ -1,17 +1,17 @@
 INSERT INTO user(username, email, password)
 VALUES
-       ('Rokas','rokas@gmail.com','ad544s1ad4sadasd4'),
-       ('Jonas','Jonas@gmail.com','sadasdasd6d4as6d4'),
-       ('Antanas','Antanaitis@gmail.com','bdfdsfsdff54'),
-       ('Mantas','mantas@gmail.com','fgfd3ghfdhfdh4dfg63');
+       ('Rokas','rokas@gmail.com','$2a$10$jsnoVmm6na5dtS7OnBq9Wedo3y4HGZdkpFWsCxoKDOYKCf03HzH6W'),
+       ('Jonas','Jonas@gmail.com','$2a$10$jsnoVmm6na5dtS7OnBq9Wedo3y4HGZdkpFWsCxoJHOYKCfO1fzH6W'),
+       ('Antanas','Antanaitis@gmail.com','$2a$10$jsnoVmm6na5dtS7OnBq5Wedo3y4HGZdkpFWsCxoKDOYKCfO1fzH6W'),
+       ('Mantas','mantas@gmail.com','$2a$10$jsnoVmm6na5dtS7OnBq9Wedo4y4HGZdkpFWsCxoKDOYKCf04BzH6W');
 
 INSERT INTO room(name, music_genre, room_id, admin_id)
 VALUES
-    ('Best music room ever','Pop Music','asdasw2dasd65asd5sad4sad4',1),
-    ('Come vibe with us','Rock','as46dfas4f7sdf4s6dfg',2),
-    ('Join us, we friendly','Pop Music','sadsa3454d5sadsad',3),
-    ('Top Rock music here','Rock','hs6d4as6f4d4s64gfdsg',3),
-    ('Only best vibes here','Hip Hop','46asd4hgfdhfgh6',4);
+    ('Best music room ever','Pop Music','$2a$10$jsnoVmm6na5dtS7OnBq9Wedo3y4HGZdkpFWsCxoKDOYKCc31fzH6W',1),
+    ('Come vibe with us','Rock','$2a$10$jsnoVmm6na5dtS7OnBq9Wedo3y4HGZdkpFWsCxoKDOYKCfO1hzH6W',2),
+    ('Join us, we friendly','Pop Music','$2a$10$jsnoVmm6na5dtS7OnBq9Wedo3y4HGZdkpFWsCxoKDOYKCfO1fzH6W',3),
+    ('Top Rock music here','Rock','$2a$10$jsnoVmm6na5dtS7OnBq9Wedo3y4HGZdkpSVsCxoKDOYKCfO1fzH6W',3),
+    ('Only best vibes here','Hip Hop','$2a$10$jsnoVmm6na5dtS7OnBq9Wedo3y6HGZdkpFWsCxoKDOYKCf03fzH6W',4);
 
 
 INSERT INTO authority(name, description)

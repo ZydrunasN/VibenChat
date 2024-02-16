@@ -1,5 +1,6 @@
 package lt.vibenchat.demo.security.config;
 
+import lt.vibenchat.demo.security.logoutHandler.DisconnectFromRoomHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;
@@ -20,10 +21,12 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 public class SecurityConfig {
 
     UserDetailsService userDetailsService;
+    DisconnectFromRoomHandler disconnectFromRoomHandler;
 
     @Autowired
-    public SecurityConfig(UserDetailsService userDetailsService) {
+    public SecurityConfig(UserDetailsService userDetailsService,DisconnectFromRoomHandler disconnectFromRoomHandler) {
         this.userDetailsService = userDetailsService;
+        this.disconnectFromRoomHandler = disconnectFromRoomHandler;
     }
 
     @Bean
@@ -44,6 +47,7 @@ public class SecurityConfig {
                         .passwordParameter("password") //The HTTP parameter to look for the password
                 ).logout(logoutConfigure -> logoutConfigure
                         .logoutUrl("/logout")
+                        .addLogoutHandler(disconnectFromRoomHandler)
                         .logoutSuccessUrl("/")
                         .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
                         .permitAll()

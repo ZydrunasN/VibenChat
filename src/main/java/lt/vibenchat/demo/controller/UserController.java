@@ -4,6 +4,7 @@ import jakarta.validation.Valid;
 import lt.vibenchat.demo.dto.entityDto.UserDto;
 import lt.vibenchat.demo.dto.inputValidateDto.user.LoginUserDto;
 import lt.vibenchat.demo.dto.inputValidateDto.user.RegisterUserDto;
+import lt.vibenchat.demo.service.RoomService;
 import lt.vibenchat.demo.service.UsersRegistrationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -17,10 +18,12 @@ import org.springframework.web.bind.annotation.PostMapping;
 public class UserController {
 
     UsersRegistrationService usersRegistrationService;
+    RoomService roomService;
 
     @Autowired
-    public UserController(UsersRegistrationService usersRegistrationService) {
+    public UserController(UsersRegistrationService usersRegistrationService,RoomService roomService) {
         this.usersRegistrationService = usersRegistrationService;
+        this.roomService = roomService;
     }
 
     @GetMapping("/register")

@@ -1,8 +1,10 @@
 CREATE TABLE user(
-    id BIGINT primary key  auto_increment,
+    id BIGINT PRIMARY KEY AUTO_INCREMENT,
     username VARCHAR(50) NOT NULL,
     email VARCHAR(100) NOT NULL,
-    password VARCHAR(100) NOT NULL
+    password VARCHAR(100) NOT NULL,
+    member_room_id BIGINT,
+    FOREIGN KEY (member_room_id) REFERENCES room(id)
 );
 
 CREATE TABLE music(

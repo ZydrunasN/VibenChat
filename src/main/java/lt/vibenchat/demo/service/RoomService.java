@@ -82,6 +82,15 @@ public class RoomService {
         }
     }
 
+    public void disconnectFromRoom() {
+        var user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        if(user.getMemberRoom() == null) return;
+
+        user.setMemberRoom(null);
+        userDao.save(user);
+        log.info("user ("+user.getUsername()+") removed from room memberList");
+    }
+
     public RoomDto getRoomById(Long id) {
         return mapper.toRoomDto(roomDao.getByID(id));
     }

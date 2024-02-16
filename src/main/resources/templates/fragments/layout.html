@@ -17,20 +17,28 @@
     <header th:fragment="header" class="container-fluid bg-second border-bottom mb-3">
 
         <div class="container d-flex flex-wrap align-items-center justify-content-center justify-content-md-between py-3">
-            <div class="dropdown mt-2">
-                <button class="btn btn-color dropdown-toggle" type="button" id="dropdownMenuButton"
-                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    <img src="/images/Flag_English.png" alt="English" class="flag">
-                </button>
-                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                    <a class="dropdown-item" th:href="@{'?lang=LT'}">
-                        <img src="/images/Flag_Lithuania.png" alt="Lithuanian" class="flag">
-                        <span class="dropdown-flag-name">Lithuanian</span>
+
+            <div class="d-flex align-items-center justify-content-md-between">
+                <div class="d-flex pe-5">
+                    <a th:href="${'/'}">
+                    <img src="/images/logo.png" alt="logo" class="logo">
                     </a>
-                    <a class="dropdown-item" th:href="@{'/?lang'}">
+                </div>
+                <div class="dropdown mt-2">
+                    <button class="btn btn-color dropdown-toggle" type="button" id="dropdownMenuButton"
+                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         <img src="/images/Flag_English.png" alt="English" class="flag">
-                        <span class="dropdown-flag-name">English</span>
-                    </a>
+                    </button>
+                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                        <a class="dropdown-item" th:href="@{'?lang=LT'}">
+                            <img src="/images/Flag_Lithuania.png" alt="Lithuanian" class="flag">
+                            <span class="dropdown-flag-name">Lithuanian</span>
+                        </a>
+                        <a class="dropdown-item" th:href="@{'?lang'}">
+                            <img src="/images/Flag_English.png" alt="English" class="flag">
+                            <span class="dropdown-flag-name">English</span>
+                        </a>
+                    </div>
                 </div>
             </div>
 
@@ -38,15 +46,16 @@
                 <h1 class="title" th:text="#{home.title}"></h1>
             </div>
 
-            <div class="col-md-5 text-end">
+            <div class="col-md-auto">
                 <a th:href="@{/login}" sec:authorize="isAnonymous()" type="button" class="btn btn-primary me-2" th:text="#{home.login}">Login</a>
                 <a th:href="@{/register}" sec:authorize="isAnonymous()" type="button" class="btn btn-primary" th:text="#{home.register}">Sign-up</a>
                 <div sec:authorize="isAuthenticated()">
                     <span sec:authentication="principal.username" class="px-2"></span>
                     <a th:href="@{/logout}"  type="button" class="btn btn-primary text-danger logout" th:text="#{home.logout}">Logout</a>
                 </div>
-
             </div>
+
+
         </div>
     </header>
 

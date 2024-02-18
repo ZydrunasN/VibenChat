@@ -23,6 +23,9 @@ public class User implements UserDetails {
     @OneToOne(mappedBy = "user")
     private Room room;
 
+    @OneToOne(mappedBy = "user")
+    private CurrentSong currentSong;
+
     @OneToMany(mappedBy = "user")
     Set<ChatMessage> chatMessageSet;
 

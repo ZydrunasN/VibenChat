@@ -31,6 +31,17 @@ CREATE TABLE room(
     CONSTRAINT room_key UNIQUE (room_id)
 );
 
+CREATE TABLE current_song(
+    id BIGINT PRIMARY KEY AUTO_INCREMENT,
+    user_id BIGINT NOT NULL,
+    room_id BIGINT NOT NULL,
+    name VARCHAR(100) NOT NULL,
+    chunk_number INTEGER NOT NULL,
+    position BIGINT NOT NULL,
+    FOREIGN KEY (user_id) REFERENCES user (id),
+    FOREIGN KEY (room_id) REFERENCES room (id)
+);
+
 CREATE TABLE chat_message(
     id BIGINT PRIMARY KEY AUTO_INCREMENT,
     time VARCHAR(100) NOT NULL,
@@ -42,15 +53,15 @@ CREATE TABLE chat_message(
 );
 
 CREATE TABLE authority(
-    id          BIGINT primary key auto_increment,
-    name        VARCHAR(100) NOT NULL,
+    id BIGINT primary key auto_increment,
+    name VARCHAR(100) NOT NULL,
     description VARCHAR(2000),
     CONSTRAINT authority_key UNIQUE (name)
 );
 
 CREATE TABLE user_authority(
-    user_id      BIGINT,
-    authority_id BIGINT,
+    user_id BIGINT NOT NULL,
+    authority_id BIGINT NOT NULL,
     CONSTRAINT user_authority_key UNIQUE (user_id, authority_id),
     FOREIGN KEY (user_id) REFERENCES user(id),
     FOREIGN KEY (authority_id) REFERENCES authority(id)

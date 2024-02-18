@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lt.vibenchat.demo.pojo.ChatMessage;
+import lt.vibenchat.demo.pojo.CurrentSong;
 import lt.vibenchat.demo.pojo.User;
 
 import java.util.Set;
@@ -18,4 +19,5 @@ public class RoomDto {
     private User user;
     private Set<ChatMessage> chatMessageSet;
     private Set<User> members;
+    private CurrentSong currentSong;
 }

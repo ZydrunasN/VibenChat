@@ -1,5 +1,9 @@
 package lt.vibenchat.demo.restAPI.service;
 
+import lt.vibenchat.demo.pojo.CurrentSong;
+import lt.vibenchat.demo.service.CurrentSongService;
+import lt.vibenchat.demo.service.RoomService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
@@ -14,8 +18,8 @@ import java.nio.file.Paths;
 
 @Service
 public class AudioStreamingService {
-    private int start = 0;
-    private double chunkNumber = 0;
+    private Long start;
+    private Long chunkNumber;
     private InputStream inputStream;
     private int bytesRead;
     double bufferDuration;
@@ -23,10 +27,22 @@ public class AudioStreamingService {
     private final byte[] buffer = new byte[BUFFER_SIZE];
 
     private static final String AUDIO_DIRECTORY = "src/main/resources/";
-    private final String FILENAME = "ChalkOutlines.mp3";
+    private  String filename;
 
-    public HttpHeaders getAudioHeaders() throws IOException {
-        setAudio();
+    private final RoomService roomService;
+    private final CurrentSongService currentSongService;
+
+    @Autowired
+    public AudioStreamingService(RoomService roomService, CurrentSongService currentSongService) {
+        this.roomService = roomService;
+        this.currentSongService = currentSongService;
+    }
+
+    public HttpHeaders getAudioHeaders(String roomId) throws IOException {
+        var room = roomService.getRoomByUUID(roomId);
+        var currentSong = room.getCurrentSong();
+
+        setAudio(currentSong);
         updateChunk();
 
         var headers = new HttpHeaders();
@@ -35,6 +51,10 @@ public class AudioStreamingService {
         headers.set("Buffer-Duration", Double.toString(bufferDuration));
         headers.set("Chunk-Number", Double.toString(chunkNumber));
 
+        currentSong.setChunkNumber(currentSong.getChunkNumber()+1);
+        currentSong.setPosition(start+BUFFER_SIZE);
+        currentSongService.updateCurrentSong(currentSong);
+
         return headers;
     }
 
@@ -42,18 +62,20 @@ public class AudioStreamingService {
         return new ByteArrayResource(buffer);
     }
 
-    private void setAudio() throws IOException {
-        Path audioPath = Paths.get(AUDIO_DIRECTORY + FILENAME);
+    private void setAudio(CurrentSong currentSong) throws IOException {
+        start = currentSong.getPosition();
+        chunkNumber = currentSong.getChunkNumber();
+        filename = currentSong.getName();
+
+        Path audioPath = Paths.get(AUDIO_DIRECTORY + filename);
         Resource resource = new UrlResource(audioPath.toUri());
         inputStream = resource.getInputStream();
     }
 
     private void updateChunk() throws IOException {
         bufferDuration = (BUFFER_SIZE * 8.0) / (192 * 1024);
-        chunkNumber++;
 
         inputStream.skip(start);
         bytesRead = inputStream.read(buffer, 0, BUFFER_SIZE);
-        start += BUFFER_SIZE;
     }
 }

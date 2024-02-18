@@ -40,7 +40,8 @@ public class EntityMapper {
                 room.getRoomUUID(),
                 room.getUser(),
                 room.getChatMessageSet(),
-                room.getMembers()
+                room.getMembers(),
+                room.getCurrentSong()
         );
     }
 
@@ -50,6 +51,9 @@ public class EntityMapper {
                 .genre(roomDto.getGenre())
                 .roomUUID(roomDto.getRoomUUID())
                 .user(roomDto.getUser())
+                .chatMessageSet(roomDto.getChatMessageSet())
+                .members(roomDto.getMembers())
+                .currentSong(roomDto.getCurrentSong())
                 .build();
     }
 

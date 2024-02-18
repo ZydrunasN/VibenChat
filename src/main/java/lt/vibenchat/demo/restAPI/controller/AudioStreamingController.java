@@ -1,6 +1,5 @@
-package lt.vibenchat.demo.restAPI.audioStreaming;
+package lt.vibenchat.demo.restAPI.controller;
 
-import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.log4j.Log4j2;
 import lt.vibenchat.demo.restAPI.service.AudioStreamingService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,6 +7,7 @@ import org.springframework.core.io.ByteArrayResource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.io.IOException;
@@ -23,10 +23,10 @@ public class AudioStreamingController {
         this.streamingService = streamingService;
     }
 
-    @GetMapping("/stream")
-    public ResponseEntity<ByteArrayResource> streamAudio(HttpServletResponse response) {
+    @GetMapping("/stream/{roomId}")
+    public ResponseEntity<ByteArrayResource> streamAudio(@PathVariable String roomId) {
         try {
-            var headers = streamingService.getAudioHeaders();
+            var headers = streamingService.getAudioHeaders(roomId);
             var byteArrayResource = streamingService.getAudioByteArrayResource();
 
             return  new ResponseEntity<>(byteArrayResource,headers, HttpStatus.OK);

@@ -32,6 +32,9 @@ public class Room {
     @OneToMany(mappedBy = "memberRoom")
     private Set<User> members = new HashSet<>();
 
+    @OneToMany(mappedBy = "room")
+    private Set<QueueSong> queue;
+
     @OneToOne(mappedBy = "room")
     private CurrentSong currentSong;
 }

@@ -27,7 +27,10 @@ public class User implements UserDetails {
     private CurrentSong currentSong;
 
     @OneToMany(mappedBy = "user")
-    Set<ChatMessage> chatMessageSet;
+    private Set<ChatMessage> chatMessageSet;
+
+    @OneToMany(mappedBy = "user")
+    private Set<QueueSong> queue;
 
     @ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
     @JoinColumn(name = "member_room_id")
@@ -37,9 +40,6 @@ public class User implements UserDetails {
     @ManyToMany(cascade = CascadeType.PERSIST)
     private Set<Authority> authorities;
 
-    @Column(nullable = false)
-    @ManyToMany(cascade = CascadeType.PERSIST)
-    private Set<Music> music;
 
     @Override
     public String getPassword() {

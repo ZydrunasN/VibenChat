@@ -22,8 +22,17 @@ CREATE TABLE current_song(
     user_id BIGINT NOT NULL,
     room_id BIGINT NOT NULL,
     name VARCHAR(100) NOT NULL,
-    chunk_number INTEGER NOT NULL,
-    position BIGINT NOT NULL,
+    time VARCHAR(100) NOT NULL,
+    FOREIGN KEY (user_id) REFERENCES user (id),
+    FOREIGN KEY (room_id) REFERENCES room (id)
+);
+
+CREATE TABLE queue_song(
+    id BIGINT PRIMARY KEY AUTO_INCREMENT,
+    user_id BIGINT NOT NULL,
+    room_id BIGINT NOT NULL,
+    name VARCHAR(100) NOT NULL,
+    time VARCHAR(100) NOT NULL,
     FOREIGN KEY (user_id) REFERENCES user (id),
     FOREIGN KEY (room_id) REFERENCES room (id)
 );

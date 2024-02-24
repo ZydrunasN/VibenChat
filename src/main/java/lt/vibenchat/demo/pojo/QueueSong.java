@@ -5,24 +5,24 @@ import lombok.*;
 
 import java.time.LocalDateTime;
 
-@Entity(name = "current_song")
+@Entity(name = "queue_song")
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
 @Getter
 @Setter
-public class CurrentSong {
+public class QueueSong {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
     private LocalDateTime time;
 
-    @OneToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private User user;
 
-    @OneToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "room_id")
     private Room room;
 }

@@ -78,21 +78,19 @@ public class EntityMapper {
 
     public CurrentSongDto toCurrentSongDto(CurrentSong currentSong) {
         return CurrentSongDto.builder()
-                .chunkNumber(currentSong.getChunkNumber())
-                .position(currentSong.getPosition())
                 .name(currentSong.getName())
                 .room(currentSong.getRoom())
                 .user(currentSong.getUser())
+                .time(currentSong.getTime())
                 .build();
     }
 
     public CurrentSong toCurrentSong(CurrentSongDto currentSongDto) {
         return CurrentSong.builder()
-                .chunkNumber(currentSongDto.getChunkNumber())
-                .position(currentSongDto.getPosition())
                 .name(currentSongDto.getName())
                 .room(currentSongDto.getRoom())
                 .user(currentSongDto.getUser())
+                .time(currentSongDto.getTime())
                 .build();
     }
 }

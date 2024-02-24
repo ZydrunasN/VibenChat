@@ -1,13 +1,7 @@
 package lt.vibenchat.demo.mapper;
 
-import lt.vibenchat.demo.dto.entityDto.ChatMessageDto;
-import lt.vibenchat.demo.dto.entityDto.CurrentSongDto;
-import lt.vibenchat.demo.dto.entityDto.RoomDto;
-import lt.vibenchat.demo.dto.entityDto.UserDto;
-import lt.vibenchat.demo.pojo.ChatMessage;
-import lt.vibenchat.demo.pojo.CurrentSong;
-import lt.vibenchat.demo.pojo.Room;
-import lt.vibenchat.demo.pojo.User;
+import lt.vibenchat.demo.dto.entityDto.*;
+import lt.vibenchat.demo.pojo.*;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -91,6 +85,24 @@ public class EntityMapper {
                 .room(currentSongDto.getRoom())
                 .user(currentSongDto.getUser())
                 .time(currentSongDto.getTime())
+                .build();
+    }
+
+    public QueueSongDto toQueueSongDto(QueueSong queueSong) {
+        return QueueSongDto.builder()
+                .name(queueSong.getName())
+                .room(queueSong.getRoom())
+                .user(queueSong.getUser())
+                .time(queueSong.getTime())
+                .build();
+    }
+
+    public QueueSong toQueueSong(QueueSongDto queueSongDto) {
+        return QueueSong.builder()
+                .name(queueSongDto.getName())
+                .room(queueSongDto.getRoom())
+                .user(queueSongDto.getUser())
+                .time(queueSongDto.getTime())
                 .build();
     }
 }

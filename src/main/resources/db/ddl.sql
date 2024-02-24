@@ -7,20 +7,6 @@ CREATE TABLE user(
     FOREIGN KEY (member_room_id) REFERENCES room(id)
 );
 
-CREATE TABLE music(
-    id BIGINT PRIMARY KEY AUTO_INCREMENT,
-    genre VARCHAR(100) NOT NULL,
-    name VARCHAR(100) NOT NULL,
-    link VARCHAR(500) NOT NULL
-);
-
-CREATE TABLE user_music (
-    user_id BIGINT NOT NULL,
-    music_id BIGINT NOT NULL,
-    FOREIGN KEY (user_id) REFERENCES user(id),
-    FOREIGN KEY (music_id) REFERENCES music(id)
-);
-
 CREATE TABLE room(
     id BIGINT PRIMARY KEY AUTO_INCREMENT,
     name VARCHAR(50) NOT NULL,

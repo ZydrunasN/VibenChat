@@ -30,7 +30,7 @@ public class User implements UserDetails {
     private Set<ChatMessage> chatMessageSet;
 
     @OneToMany(mappedBy = "user")
-    private Set<QueueSong> queue;
+    private Set<QueueSong> queueSongs;
 
     @ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
     @JoinColumn(name = "member_room_id")

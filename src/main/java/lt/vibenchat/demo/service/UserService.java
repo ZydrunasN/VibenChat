@@ -29,8 +29,12 @@ public class UserService implements UserDetailsService {
         userDao.save(user);
     }
 
-    public UserDto getUserById(Long id) {
+    public UserDto getUserDtoById(Long id) {
         return mapper.toUserDto(userDao.getByID(id));
+    }
+
+    public User getUserById(Long id) {
+        return userDao.getByID(id);
     }
 
     public void deleteById(Long id) {

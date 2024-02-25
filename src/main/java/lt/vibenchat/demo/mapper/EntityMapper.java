@@ -29,12 +29,14 @@ public class EntityMapper {
 
     public RoomDto toRoomDto(Room room) {
         return new RoomDto(
+                room.getId(),
                 room.getName(),
                 room.getGenre(),
                 room.getRoomUUID(),
                 room.getUser(),
                 room.getChatMessageSet(),
                 room.getMembers(),
+                room.getQueueSongs(),
                 room.getCurrentSong()
         );
     }
@@ -48,6 +50,7 @@ public class EntityMapper {
                 .chatMessageSet(roomDto.getChatMessageSet())
                 .members(roomDto.getMembers())
                 .currentSong(roomDto.getCurrentSong())
+                .queueSongs(roomDto.getQueueSongs())
                 .build();
     }
 

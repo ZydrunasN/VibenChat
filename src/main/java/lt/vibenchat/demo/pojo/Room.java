@@ -33,7 +33,7 @@ public class Room {
     private Set<User> members = new HashSet<>();
 
     @OneToMany(mappedBy = "room")
-    private Set<QueueSong> queue;
+    private Set<QueueSong> queueSongs;
 
     @OneToOne(mappedBy = "room")
     private CurrentSong currentSong;

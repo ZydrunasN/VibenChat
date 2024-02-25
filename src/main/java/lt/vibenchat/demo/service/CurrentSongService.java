@@ -23,6 +23,10 @@ public class CurrentSongService {
         currentSongDao.save(mapper.toCurrentSong(currentSongDto));
     }
 
+    public void newCurrentSong(CurrentSong currentSong) {
+        currentSongDao.save(currentSong);
+    }
+
     public void updateCurrentSong(CurrentSong currentSong) {
         currentSongDao.save(currentSong);
     }
@@ -30,5 +34,4 @@ public class CurrentSongService {
     public void deleteCurrentSongById(Long id) {
         currentSongDao.deleteByID(id);
     }
-
 }

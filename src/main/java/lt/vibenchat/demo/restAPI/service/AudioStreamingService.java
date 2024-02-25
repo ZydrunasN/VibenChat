@@ -1,8 +1,15 @@
 package lt.vibenchat.demo.restAPI.service;
 
+import jakarta.servlet.http.HttpSession;
+import lombok.Getter;
+import lombok.extern.log4j.Log4j2;
+import lt.vibenchat.demo.dto.entityDto.RoomDto;
 import lt.vibenchat.demo.pojo.CurrentSong;
+import lt.vibenchat.demo.pojo.QueueSong;
 import lt.vibenchat.demo.service.CurrentSongService;
+import lt.vibenchat.demo.service.QueueSongService;
 import lt.vibenchat.demo.service.RoomService;
+import lt.vibenchat.demo.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.core.io.Resource;
@@ -10,51 +17,61 @@ import org.springframework.core.io.UrlResource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Path;
-import java.nio.file.Paths;
+import java.time.LocalDateTime;
+import java.util.Comparator;
 
 @Service
+@Log4j2
 public class AudioStreamingService {
-    private Long start;
-    private Long chunkNumber;
-    private InputStream inputStream;
-    private int bytesRead;
-    double bufferDuration;
+    @Getter
+    private Long bytesRead;
     private final int BUFFER_SIZE = 1024 * 1024; //1MB
     private final byte[] buffer = new byte[BUFFER_SIZE];
-
     private static final String AUDIO_DIRECTORY = "src/main/resources/";
-    private  String filename;
 
     private final RoomService roomService;
     private final CurrentSongService currentSongService;
+    private final UserService userService;
+    private final QueueSongService queueSongService;
 
     @Autowired
-    public AudioStreamingService(RoomService roomService, CurrentSongService currentSongService) {
+    public AudioStreamingService(RoomService roomService, CurrentSongService currentSongService, UserService userService, QueueSongService queueSongService) {
         this.roomService = roomService;
         this.currentSongService = currentSongService;
+        this.userService = userService;
+        this.queueSongService = queueSongService;
     }
 
-    public HttpHeaders getAudioHeaders(String roomId) throws IOException {
-        var room = roomService.getRoomByUUID(roomId);
-        var currentSong = room.getCurrentSong();
-
-        setAudio(currentSong);
-        updateChunk();
-
+    @Transactional
+    public HttpHeaders getAudioHeaders(String roomId, Long bytesReadTotal) throws IOException {
+        var roomDto = roomService.getRoomByUUID(roomId);
+        var currentSong =  getCurrentSong(roomDto);
+        var inputStream = getInputStream(currentSong);
         var headers = new HttpHeaders();
+        bytesRead = bytesReadTotal;
+
+        //IF FULL CURRENT SONG WAS SENT, REMOVE AND GET NEXT ONE FROM QUEUE
+        if(inputStream.available() == bytesRead) {
+            removeCurrentSong(roomDto);
+            addSongFromQueueToCurrent(roomDto);
+            bytesRead = 0L;
+            headers.set("Restart","true");
+            return headers;
+        }
+
+        inputStream.skip(bytesRead);
+        long bytesReadBuffer = inputStream.read(buffer, 0, BUFFER_SIZE);
+
         headers.setContentType(MediaType.APPLICATION_OCTET_STREAM);
-        headers.setContentLength(bytesRead);
-        headers.set("Buffer-Duration", Double.toString(bufferDuration));
-        headers.set("Chunk-Number", Double.toString(chunkNumber));
+        headers.setContentLength(bytesReadBuffer);
+        headers.set("Restart","false");
 
-        currentSong.setChunkNumber(currentSong.getChunkNumber()+1);
-        currentSong.setPosition(start+BUFFER_SIZE);
-        currentSongService.updateCurrentSong(currentSong);
-
+        bytesRead += bytesReadBuffer;
         return headers;
     }
 
@@ -62,20 +79,74 @@ public class AudioStreamingService {
         return new ByteArrayResource(buffer);
     }
 
-    private void setAudio(CurrentSong currentSong) throws IOException {
-        start = currentSong.getPosition();
-        chunkNumber = currentSong.getChunkNumber();
-        filename = currentSong.getName();
-
-        Path audioPath = Paths.get(AUDIO_DIRECTORY + filename);
-        Resource resource = new UrlResource(audioPath.toUri());
-        inputStream = resource.getInputStream();
+    public boolean isThereAnySong(String roomId) {
+        var roomDto = roomService.getRoomByUUID(roomId);
+        return roomDto.getCurrentSong() != null || !roomDto.getQueueSongs().isEmpty();
     }
 
-    private void updateChunk() throws IOException {
-        bufferDuration = (BUFFER_SIZE * 8.0) / (192 * 1024);
+    private CurrentSong getCurrentSong(RoomDto roomDto) {
+        if(roomDto.getCurrentSong() == null) {
+            log.warn("Failure at trying to get Current Song in AudioStreamingService");
+            return new CurrentSong();
+        }
+        return roomDto.getCurrentSong();
+    }
 
-        inputStream.skip(start);
-        bytesRead = inputStream.read(buffer, 0, BUFFER_SIZE);
+    private InputStream getInputStream(CurrentSong currentSong) throws IOException {
+        final String filename = currentSong.getName();
+
+        Path audioPath = Path.of(AUDIO_DIRECTORY + filename);
+        Resource resource = new UrlResource(audioPath.toUri());
+        return resource.getInputStream();
+    }
+
+    @Transactional
+    public CurrentSong addSongFromQueueToCurrent(RoomDto roomDto) {
+        QueueSong songToBePlayed = roomDto.getQueueSongs().stream()
+                .min(Comparator.comparing(QueueSong::getId))
+                .orElse(null); //TAKE FIRST SONG
+
+        //CHECK IF SONG EXISTS
+        if(songToBePlayed == null) {
+            log.warn("Can't add song From Queue to Current Song in room "+roomDto.getId()+"(id)");
+            return new CurrentSong();
+        }
+
+        //MAP IT TO CURRENT SONG
+        CurrentSong currentSong = CurrentSong.builder()
+                .time(LocalDateTime.now())
+                .user(songToBePlayed.getUser())
+                .room(songToBePlayed.getRoom())
+                .name(songToBePlayed.getName())
+                .build();
+
+        //REMOVE FROM QUEUE AND ADD TO CURRENT
+        currentSongService.newCurrentSong(currentSong);
+        queueSongService.deleteSongFromQueueById(songToBePlayed.getId());
+        return currentSong;
+    }
+
+    private void removeCurrentSong(RoomDto roomDto) {
+        currentSongService.deleteCurrentSongById(roomDto.getCurrentSong().getId());
+        roomDto.setCurrentSong(null);
+    }
+
+    public void addMockSongs() {
+        QueueSong queueSong = QueueSong.builder()
+                .name("ChalkOutlines.mp3")
+                .time(LocalDateTime.now())
+                .user(userService.getUserById(1L))
+                .room(roomService.getEntityRoomByUUID("asdasw2dasd65asd5sad4sad4"))
+                .build();
+
+        QueueSong queueSong2 = QueueSong.builder()
+                .name("Loco.mp3")
+                .time(LocalDateTime.now())
+                .user(userService.getUserById(6L))
+                .room(roomService.getEntityRoomByUUID("asdasw2dasd65asd5sad4sad4"))
+                .build();
+
+        queueSongService.addSongToQueue(queueSong);
+        queueSongService.addSongToQueue(queueSong2);
     }
 }

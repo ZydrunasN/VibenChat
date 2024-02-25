@@ -1,7 +1,9 @@
 package lt.vibenchat.demo.restAPI.controller;
 
+import jakarta.servlet.http.HttpSession;
 import lombok.extern.log4j.Log4j2;
 import lt.vibenchat.demo.restAPI.service.AudioStreamingService;
+import lt.vibenchat.demo.service.QueueSongService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.http.HttpStatus;
@@ -24,11 +26,26 @@ public class AudioStreamingController {
     }
 
     @GetMapping("/stream/{roomId}")
-    public ResponseEntity<ByteArrayResource> streamAudio(@PathVariable String roomId) {
+    public ResponseEntity<ByteArrayResource> streamAudio(@PathVariable String roomId,HttpSession session) {
         try {
-            var headers = streamingService.getAudioHeaders(roomId);
+            Long bytesRead;
+
+            //ADD SONGS MOCK METHOD
+            if(!streamingService.isThereAnySong(roomId)){
+                streamingService.addMockSongs();
+                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+            }
+
+            if(session.getAttribute("bytesRead") == null) {
+                bytesRead = 0L;
+            } else {
+                bytesRead = (Long) session.getAttribute("bytesRead");
+            }
+
+            var headers = streamingService.getAudioHeaders(roomId,bytesRead);
             var byteArrayResource = streamingService.getAudioByteArrayResource();
 
+            session.setAttribute("bytesRead",streamingService.getBytesRead());
             return  new ResponseEntity<>(byteArrayResource,headers, HttpStatus.OK);
         } catch (IOException e) {
             log.error("Streaming failed");

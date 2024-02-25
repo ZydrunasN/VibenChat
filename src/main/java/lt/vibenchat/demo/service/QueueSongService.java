@@ -22,11 +22,15 @@ public class QueueSongService {
         queueSongDao.save(mapper.toQueueSong(queueSongDto));
     }
 
+    public void addSongToQueue(QueueSong queueSong) {
+        queueSongDao.save(queueSong);
+    }
+
     public void updateSongInQueue(QueueSong queueSong) {
         queueSongDao.save(queueSong);
     }
 
-    public void deleteCurrentSongById(Long id) {
+    public void deleteSongFromQueueById(Long id) {
         queueSongDao.deleteByID(id);
     }
 }

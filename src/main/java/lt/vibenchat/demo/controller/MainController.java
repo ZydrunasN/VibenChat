@@ -1,5 +1,6 @@
 package lt.vibenchat.demo.controller;
 
+import jakarta.servlet.http.HttpSession;
 import lt.vibenchat.demo.service.RoomService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -17,10 +18,8 @@ public class MainController {
     }
 
     @GetMapping
-    public String home (Model model) {
-        if(!SecurityContextHolder.getContext().getAuthentication().getName().equals("anonymousUser")) {
-            roomService.disconnectFromRoom();
-        }
+    public String home (Model model, HttpSession session) {
+        roomService.disconnectFromRoom(session);
 
         model.addAttribute("roomList",roomService.getListOfRooms());
         return "index";

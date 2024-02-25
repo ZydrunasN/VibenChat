@@ -20,6 +20,6 @@ public class DisconnectFromRoomHandler implements LogoutHandler {
 
     @Override
     public void logout(HttpServletRequest request, HttpServletResponse response, Authentication authentication) {
-        roomService.disconnectFromRoom();
+        roomService.disconnectFromRoom(request.getSession());
     }
 }

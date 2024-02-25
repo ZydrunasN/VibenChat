@@ -84,10 +84,10 @@ public class AudioStreamingService {
         return roomDto.getCurrentSong() != null || !roomDto.getQueueSongs().isEmpty();
     }
 
-    private CurrentSong getCurrentSong(RoomDto roomDto) {
+    @Transactional
+    public CurrentSong getCurrentSong(RoomDto roomDto) {
         if(roomDto.getCurrentSong() == null) {
-            log.warn("Failure at trying to get Current Song in AudioStreamingService");
-            return new CurrentSong();
+            return addSongFromQueueToCurrent(roomDto);
         }
         return roomDto.getCurrentSong();
     }

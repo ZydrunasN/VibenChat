@@ -25,16 +25,17 @@ import java.nio.file.Path;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.Comparator;
+import java.util.Objects;
 
 @Service
 @Log4j2
 public class AudioStreamingService {
     @Getter
     private Long bytesRead;
-    private final int BUFFER_SIZE = 1024 * 1024; //1MB
+    private static final int BUFFER_SIZE = 1024 * 1024; //1MB
     private static final long BITRATE = 192;
-    private final byte[] buffer = new byte[BUFFER_SIZE];
     private static final String AUDIO_DIRECTORY = "src/main/resources/static/audio/";
+    private final byte[] buffer = new byte[BUFFER_SIZE];
 
     private final RoomService roomService;
     private final CurrentSongService currentSongService;
@@ -42,7 +43,8 @@ public class AudioStreamingService {
     private final QueueSongService queueSongService;
 
     @Autowired
-    public AudioStreamingService(RoomService roomService, CurrentSongService currentSongService, UserService userService, QueueSongService queueSongService) {
+    public AudioStreamingService(RoomService roomService, CurrentSongService currentSongService,
+                                 UserService userService, QueueSongService queueSongService) {
         this.roomService = roomService;
         this.currentSongService = currentSongService;
         this.userService = userService;
@@ -58,7 +60,10 @@ public class AudioStreamingService {
         bytesRead = bytesReadTotal;
 
         //IF FULL CURRENT SONG WAS SENT, REMOVE AND GET NEXT ONE FROM QUEUE
-        if(inputStream.available() == bytesRead) {
+        final var currentSongTime = currentSong.getTime();
+        final var timePassedSeconds = Duration.between(currentSongTime, LocalDateTime.now()).toSeconds();
+
+        if(timePassedSeconds >= audioFileLengthSeconds(currentSong)) {
             removeCurrentSong(roomDto);
             addSongFromQueueToCurrent(roomDto);
             bytesRead = 0L;
@@ -152,8 +157,8 @@ public class AudioStreamingService {
         queueSongService.addSongToQueue(queueSong2);
     }
 
-    public Long calculateStartOfStream(final Long bytesRead,final String roomId) throws IOException {
-        final long startOfStream;
+    @Transactional
+    public Long calculateStartOfStream(final Long bytesRead, final String roomId) throws IOException {
         final var roomDto = roomService.getRoomByUUID(roomId);
         final var currentSong = roomDto.getCurrentSong();
 
@@ -161,17 +166,30 @@ public class AudioStreamingService {
 
         final var currentSongTime = currentSong.getTime();
         final var timePassedSeconds = Duration.between(currentSongTime, LocalDateTime.now()).toSeconds();
+        long fileSecondsLength = audioFileLengthSeconds(currentSong);
 
-        if(timePassedSeconds > 10 && bytesRead == null) {
-            return (timePassedSeconds * BITRATE * 1024) / 8L; // CONVERTING TIME TO BYTES
+        if(bytesRead == null) { // If user just joined room
+            if(timePassedSeconds >= fileSecondsLength) {
+                removeCurrentSong(roomDto);
+                return 0L;
+            }
+
+            if(timePassedSeconds > 10) {
+                return (timePassedSeconds * BITRATE * 1024) / 8L; // CONVERTING TIME TO BYTES
+            }
+
+            return 0L;
+        } else { //User was listening from the beginning of songs play-time
+            return bytesRead;
         }
+    }
 
-        if(bytesRead == null) {
-            startOfStream = 0L;
-        } else {
-            startOfStream = bytesRead;
-        }
+    private Long audioFileLengthSeconds(CurrentSong currentSong) throws IOException{
+        var filename = currentSong.getName();
+        Path audioPath = Path.of(AUDIO_DIRECTORY + filename);
+        Resource resource = new UrlResource(audioPath.toUri());
+        long fileByteLength = resource.contentLength();
 
-        return startOfStream;
+        return (fileByteLength*8L)/(BITRATE*1024);
     }
 }

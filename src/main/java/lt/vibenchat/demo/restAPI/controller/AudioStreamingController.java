@@ -10,6 +10,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.io.IOException;
@@ -28,15 +29,14 @@ public class AudioStreamingController {
     @GetMapping("/stream/{roomId}")
     public ResponseEntity<ByteArrayResource> streamAudio(@PathVariable String roomId,HttpSession session) {
         try {
+            final Long attributeBytesRead = (Long) session.getAttribute("bytesRead");
+            final Long bytesRead = streamingService.calculateStartOfStream(attributeBytesRead,roomId);
+
             //ADD SONGS MOCK METHOD
             if(!streamingService.isThereAnySong(roomId)){
                 streamingService.addMockSongs();
                 return new ResponseEntity<>(HttpStatus.NO_CONTENT);
             }
-
-            final Long attributeBytesRead = (Long) session.getAttribute("bytesRead");
-            final Long bytesRead = streamingService.calculateStartOfStream(attributeBytesRead,roomId);
-
 
             var headers = streamingService.getAudioHeaders(roomId,bytesRead);
             var byteArrayResource = streamingService.getAudioByteArrayResource();

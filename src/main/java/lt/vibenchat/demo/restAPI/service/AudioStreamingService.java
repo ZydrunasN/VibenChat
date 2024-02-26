@@ -22,6 +22,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Path;
+import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.Comparator;
 
@@ -31,8 +32,9 @@ public class AudioStreamingService {
     @Getter
     private Long bytesRead;
     private final int BUFFER_SIZE = 1024 * 1024; //1MB
+    private static final long BITRATE = 192;
     private final byte[] buffer = new byte[BUFFER_SIZE];
-    private static final String AUDIO_DIRECTORY = "src/main/resources/";
+    private static final String AUDIO_DIRECTORY = "src/main/resources/static/audio/";
 
     private final RoomService roomService;
     private final CurrentSongService currentSongService;
@@ -148,5 +150,28 @@ public class AudioStreamingService {
 
         queueSongService.addSongToQueue(queueSong);
         queueSongService.addSongToQueue(queueSong2);
+    }
+
+    public Long calculateStartOfStream(final Long bytesRead,final String roomId) throws IOException {
+        final long startOfStream;
+        final var roomDto = roomService.getRoomByUUID(roomId);
+        final var currentSong = roomDto.getCurrentSong();
+
+        if (currentSong == null) return 0L;
+
+        final var currentSongTime = currentSong.getTime();
+        final var timePassedSeconds = Duration.between(currentSongTime, LocalDateTime.now()).toSeconds();
+
+        if(timePassedSeconds > 10 && bytesRead == null) {
+            return (timePassedSeconds * BITRATE * 1024) / 8L; // CONVERTING TIME TO BYTES
+        }
+
+        if(bytesRead == null) {
+            startOfStream = 0L;
+        } else {
+            startOfStream = bytesRead;
+        }
+
+        return startOfStream;
     }
 }

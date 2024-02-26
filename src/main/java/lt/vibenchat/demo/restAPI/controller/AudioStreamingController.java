@@ -28,19 +28,15 @@ public class AudioStreamingController {
     @GetMapping("/stream/{roomId}")
     public ResponseEntity<ByteArrayResource> streamAudio(@PathVariable String roomId,HttpSession session) {
         try {
-            Long bytesRead;
-
             //ADD SONGS MOCK METHOD
             if(!streamingService.isThereAnySong(roomId)){
                 streamingService.addMockSongs();
                 return new ResponseEntity<>(HttpStatus.NO_CONTENT);
             }
 
-            if(session.getAttribute("bytesRead") == null) {
-                bytesRead = 0L;
-            } else {
-                bytesRead = (Long) session.getAttribute("bytesRead");
-            }
+            final Long attributeBytesRead = (Long) session.getAttribute("bytesRead");
+            final Long bytesRead = streamingService.calculateStartOfStream(attributeBytesRead,roomId);
+
 
             var headers = streamingService.getAudioHeaders(roomId,bytesRead);
             var byteArrayResource = streamingService.getAudioByteArrayResource();

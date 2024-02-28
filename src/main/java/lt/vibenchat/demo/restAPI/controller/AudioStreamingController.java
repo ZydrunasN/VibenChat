@@ -33,15 +33,18 @@ public class AudioStreamingController {
             final Long bytesRead = streamingService.calculateStartOfStream(attributeBytesRead,roomId);
 
             //ADD SONGS MOCK METHOD
-            if(!streamingService.isThereAnySong(roomId)){
+            if(!streamingService.isThereAnySong(roomId)) {
                 streamingService.addMockSongs();
+                log.info("No songs left to stream in room "+roomId+", users entering waiting state...");
                 return new ResponseEntity<>(HttpStatus.NO_CONTENT);
             }
 
             var headers = streamingService.getAudioHeaders(roomId,bytesRead);
             var byteArrayResource = streamingService.getAudioByteArrayResource();
+            var totalBufferedByteCount = streamingService.getBytesRead();
 
-            session.setAttribute("bytesRead",streamingService.getBytesRead());
+            log.info("buffer of size: "+(totalBufferedByteCount-bytesRead)+" bytes was sent");
+            session.setAttribute("bytesRead",totalBufferedByteCount);
             return  new ResponseEntity<>(byteArrayResource,headers, HttpStatus.OK);
         } catch (IOException e) {
             log.error("Streaming failed");

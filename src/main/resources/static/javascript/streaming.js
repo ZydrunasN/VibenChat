@@ -27,8 +27,13 @@ window.addEventListener('DOMContentLoaded', (event) => {
             if (xhr.status === 200) {
                 let restart = xhr.getResponseHeader("Restart");
 
-                if(restart === "true") restartPlayer();
-                else sourceBuffer.appendBuffer(xhr.response);
+                if(restart === "true") {
+                    restartPlayer();
+                    fetchChunk(sourceBuffer);
+                } else {
+                    sourceBuffer.appendBuffer(xhr.response);
+                }
+
             } else if (xhr.status === 204) {
                 if(sourceBuffer.buffered > 0) restartPlayer();
                 let delayTime = 10000//10 Seconds In MilliSeconds
@@ -42,10 +47,12 @@ window.addEventListener('DOMContentLoaded', (event) => {
     }
 
     function restartPlayer() {
-        mediaSource.sourceBuffers[0].remove(0,Number.POSITIVE_INFINITY);
-        audioPlayer.pause();
-        audioPlayer.removeAttribute("src")
-        audioPlayer.load();
-        audioPlayer.src = URL.createObjectURL(mediaSource);
+        if(mediaSource.sourceBuffers[0].buffered > 0) {
+            mediaSource.sourceBuffers[0].remove(0, Number.POSITIVE_INFINITY);
+            audioPlayer.pause();
+            audioPlayer.removeAttribute("src")
+            audioPlayer.load();
+            audioPlayer.src = URL.createObjectURL(mediaSource);
+        }
     }
 });

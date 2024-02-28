@@ -1,6 +1,5 @@
 package lt.vibenchat.demo.restAPI.service;
 
-import jakarta.servlet.http.HttpSession;
 import lombok.Getter;
 import lombok.extern.log4j.Log4j2;
 import lt.vibenchat.demo.dto.entityDto.RoomDto;
@@ -25,7 +24,6 @@ import java.nio.file.Path;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.Comparator;
-import java.util.Objects;
 
 @Service
 @Log4j2
@@ -59,10 +57,9 @@ public class AudioStreamingService {
         var headers = new HttpHeaders();
         bytesRead = bytesReadTotal;
 
-        //IF FULL CURRENT SONG WAS SENT, REMOVE AND GET NEXT ONE FROM QUEUE
         final var currentSongTime = currentSong.getTime();
         final var timePassedSeconds = Duration.between(currentSongTime, LocalDateTime.now()).toSeconds();
-
+        //IF FULL CURRENT SONG WAS SENT, REMOVE AND GET NEXT ONE FROM QUEUE
         if(timePassedSeconds >= audioFileLengthSeconds(currentSong)) {
             removeCurrentSong(roomDto);
             addSongFromQueueToCurrent(roomDto);
@@ -133,7 +130,7 @@ public class AudioStreamingService {
         return currentSong;
     }
 
-    private void removeCurrentSong(RoomDto roomDto) {
+    public void removeCurrentSong(RoomDto roomDto) {
         currentSongService.deleteCurrentSongById(roomDto.getCurrentSong().getId());
         roomDto.setCurrentSong(null);
     }
@@ -157,24 +154,19 @@ public class AudioStreamingService {
         queueSongService.addSongToQueue(queueSong2);
     }
 
-    @Transactional
+
     public Long calculateStartOfStream(final Long bytesRead, final String roomId) throws IOException {
         final var roomDto = roomService.getRoomByUUID(roomId);
         final var currentSong = roomDto.getCurrentSong();
 
         if (currentSong == null) return 0L;
 
-        final var currentSongTime = currentSong.getTime();
-        final var timePassedSeconds = Duration.between(currentSongTime, LocalDateTime.now()).toSeconds();
-        long fileSecondsLength = audioFileLengthSeconds(currentSong);
-
         if(bytesRead == null) { // If user just joined room
-            if(timePassedSeconds >= fileSecondsLength) {
-                removeCurrentSong(roomDto);
-                return 0L;
-            }
+            final var currentSongTime = currentSong.getTime();
+            final var timePassedSeconds = Duration.between(currentSongTime, LocalDateTime.now()).toSeconds();
+            long fileSecondsLength = audioFileLengthSeconds(currentSong);
 
-            if(timePassedSeconds > 10) {
+            if(timePassedSeconds > 10 && timePassedSeconds < fileSecondsLength) {
                 return (timePassedSeconds * BITRATE * 1024) / 8L; // CONVERTING TIME TO BYTES
             }
 

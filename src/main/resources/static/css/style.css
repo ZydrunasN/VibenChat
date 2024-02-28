@@ -55,6 +55,10 @@ img.logo{
     background-color: #0D6EFD;
 }
 
+.color-blue {
+    color: #0D6EFD;
+}
+
 .dropdown-item:hover {
     background-color: #0D6EFD;
     color: white;

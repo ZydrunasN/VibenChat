@@ -13,7 +13,7 @@
                 <p>
                     Audio player
                 </p>
-                <audio id="audioPlayer" controls autoplay>
+                <audio id="audioPlayer" class="pb-3" controls autoplay>
                     Your browser does not support the audio element.
                 </audio>
             </div>
@@ -21,6 +21,8 @@
 
         <section class="col col-m-auto">
             <div class="chat-message">
+                <h2 th:text="${roomName}" class="pb-4"></h2>
+
                 <div sec:authorize="hasRole('USER')">
                     <form method="post" th:action="@{chat}" th:object="${sendChatMessageDto}">
                         <textarea th:field="*{messageText}" rows="2" cols="50"></textarea>
@@ -36,6 +38,7 @@
                         <span th:text="#{room.notUser}"></span>
                     </p>
                 </div>
+
                 <ul class="chat" th:with="side = ${chatMessageList.indexOf(message) % 2}" th:each="message: ${chatMessageList}">
                     <li class="left clearfix" th:if="${side == 1}">
                     	<span class="chat-img pull-left">

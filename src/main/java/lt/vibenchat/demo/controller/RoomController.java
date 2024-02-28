@@ -40,9 +40,12 @@ public class RoomController {
             roomService.addUserAsMember(roomId);
         }
 
+        var room = roomService.getRoomByUUID(roomId);
+
+        model.addAttribute("roomName",room.getName());
         model.addAttribute("sendChatMessageDto", SendChatMessageDto.builder().build());
         model.addAttribute("chatMessageList",chatMessageService.getSortedListOfMessages(roomId));
-        model.addAttribute("roomMemberList",roomService.getRoomByUUID(roomId).getMembers());
+        model.addAttribute("roomMemberList",room.getMembers());
 
         return "room";
     }

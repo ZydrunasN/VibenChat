@@ -6,21 +6,21 @@ window.addEventListener('DOMContentLoaded', (event) => {
     let sourceBuffer;
 
     audioPlayer.src = URL.createObjectURL(mediaSource);
+    audioPlayer.volume = 0.05;
 
     mediaSource.addEventListener('sourceopen', function() {
         sourceBuffer = mediaSource.addSourceBuffer('audio/mpeg');
-
-        fetchChunk(sourceBuffer);
+        fetchChunk();
         audioPlayer.play();
     });
 
     audioPlayer.addEventListener('timeupdate', function() {
         if (sourceBuffer.timestampOffset.toString() - audioPlayer.currentTime < 1) {
-            fetchChunk(sourceBuffer);
+            fetchChunk();
         }
     });
 
-    function fetchChunk(sourceBuffer) {
+    function fetchChunk() {
         xhr.open("GET", '/stream/'+roomVariable, true);
         xhr.responseType = "arraybuffer";
         xhr.onload = function () {
@@ -28,18 +28,19 @@ window.addEventListener('DOMContentLoaded', (event) => {
                 let restart = xhr.getResponseHeader("Restart");
 
                 if(restart === "true") {
-                    restartPlayer();
-                    fetchChunk(sourceBuffer);
+                    if (sourceBuffer.buffered.length > 0) {
+                        restartPlayer();
+                    } else fetchChunk();
                 } else {
                     sourceBuffer.appendBuffer(xhr.response);
                 }
 
             } else if (xhr.status === 204) {
-                if(sourceBuffer.buffered > 0) restartPlayer();
+                if (sourceBuffer.buffered.length > 0) restartPlayer();
                 let delayTime = 10000//10 Seconds In MilliSeconds
 
                 setTimeout(function() {
-                    fetchChunk(sourceBuffer)
+                    fetchChunk()
                     }, delayTime);
             }
         };
@@ -47,12 +48,10 @@ window.addEventListener('DOMContentLoaded', (event) => {
     }
 
     function restartPlayer() {
-        if(mediaSource.sourceBuffers[0].buffered > 0) {
-            mediaSource.sourceBuffers[0].remove(0, Number.POSITIVE_INFINITY);
-            audioPlayer.pause();
-            audioPlayer.removeAttribute("src")
-            audioPlayer.load();
-            audioPlayer.src = URL.createObjectURL(mediaSource);
-        }
+        sourceBuffer.remove(0, Number.POSITIVE_INFINITY);
+        audioPlayer.pause();
+        audioPlayer.removeAttribute("src")
+        audioPlayer.load();
+        audioPlayer.src = URL.createObjectURL(mediaSource);
     }
 });

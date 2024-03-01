@@ -40,9 +40,6 @@ public class UserController {
 
     @PostMapping("/register")
     public String registerUser(@Valid RegisterUserDto registerUserDto, BindingResult errors, Model model) {
-        if (errors.hasErrors()) {
-            return "/register";
-        }
         try {
             usersRegistrationService.register(UserDto.builder()
                     .password(registerUserDto.getPassword())
@@ -54,7 +51,11 @@ public class UserController {
                 errors.rejectValue("username", "Username is already used!");
             }
         }
-        return "redirect:";
+
+        if (errors.hasErrors()) {
+            return "/register";
+        }
+        return "redirect:/login";
     }
 
     @PostMapping("/login")

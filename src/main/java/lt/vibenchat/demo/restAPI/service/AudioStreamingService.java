@@ -65,6 +65,8 @@ public class AudioStreamingService {
             addSongFromQueueToCurrent(roomDto);
             bytesRead = 0L;
             headers.set("Restart","true");
+
+            log.info("Song reached its end point, instructing client to restart");
             return headers;
         }
 
@@ -83,8 +85,19 @@ public class AudioStreamingService {
         return new ByteArrayResource(buffer);
     }
 
-    public boolean isThereAnySong(String roomId) {
+    public boolean isThereAnySong(String roomId) throws IOException {
         var roomDto = roomService.getRoomByUUID(roomId);
+
+        if(roomDto.getCurrentSong() != null && roomDto.getQueueSongs().isEmpty()) {
+            final var timePassedSeconds = Duration.between(roomDto.getCurrentSong().getTime(),
+                    LocalDateTime.now()).toSeconds();
+
+            if(timePassedSeconds >= audioFileLengthSeconds(roomDto.getCurrentSong())) {
+                removeCurrentSong(roomDto);
+                return false;
+            }
+        }
+
         return roomDto.getCurrentSong() != null || !roomDto.getQueueSongs().isEmpty();
     }
 
@@ -124,6 +137,7 @@ public class AudioStreamingService {
                 .name(songToBePlayed.getName())
                 .build();
 
+        log.info("Adding song from queue to current song in room "+roomDto.getId()+"(id)");
         //REMOVE FROM QUEUE AND ADD TO CURRENT
         currentSongService.newCurrentSong(currentSong);
         queueSongService.deleteSongFromQueueById(songToBePlayed.getId());

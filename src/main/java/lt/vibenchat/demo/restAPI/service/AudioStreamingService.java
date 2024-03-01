@@ -169,25 +169,23 @@ public class AudioStreamingService {
     }
 
 
-    public Long calculateStartOfStream(final Long bytesRead, final String roomId) throws IOException {
+    public Long calculateStartOfStream(final Long bytesRead, final String roomId,final boolean isFirstChunk) throws IOException {
         final var roomDto = roomService.getRoomByUUID(roomId);
         final var currentSong = roomDto.getCurrentSong();
 
         if (currentSong == null) return 0L;
 
-        if(bytesRead == null) { // If user just joined room
-            final var currentSongTime = currentSong.getTime();
-            final var timePassedSeconds = Duration.between(currentSongTime, LocalDateTime.now()).toSeconds();
-            long fileSecondsLength = audioFileLengthSeconds(currentSong);
+        final var currentSongTime = currentSong.getTime();
+        final var timePassedSeconds = Duration.between(currentSongTime, LocalDateTime.now()).toSeconds();
+        long fileSecondsLength = audioFileLengthSeconds(currentSong);
 
-            if(timePassedSeconds > 10 && timePassedSeconds < fileSecondsLength) {
-                return (timePassedSeconds * BITRATE * 1024) / 8L; // CONVERTING TIME TO BYTES
-            }
-
+        if(isFirstChunk && timePassedSeconds > 10 && timePassedSeconds < fileSecondsLength) {
+            return (timePassedSeconds * BITRATE * 1024) / 8L;
+        } else if(isFirstChunk && timePassedSeconds < 10) {
             return 0L;
-        } else { //User was listening from the beginning of songs play-time
-            return bytesRead;
         }
+
+        return bytesRead;
     }
 
     private Long audioFileLengthSeconds(CurrentSong currentSong) throws IOException{

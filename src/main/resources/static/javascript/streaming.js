@@ -9,20 +9,22 @@ window.addEventListener('DOMContentLoaded', (event) => {
     audioPlayer.volume = 0.05;
 
     mediaSource.addEventListener('sourceopen', function() {
+        console.log("sourceopen event is triggered")
         sourceBuffer = mediaSource.addSourceBuffer('audio/mpeg');
-        fetchChunk();
+        fetchChunk(true);
         audioPlayer.play();
     });
 
     audioPlayer.addEventListener('timeupdate', function() {
         if (sourceBuffer.timestampOffset.toString() - audioPlayer.currentTime < 1) {
-            fetchChunk();
+            fetchChunk(false);
         }
     });
 
-    function fetchChunk() {
-        xhr.open("GET", '/stream/'+roomVariable, true);
+    function fetchChunk(isFirstChunk) {
+        xhr.open("GET", '/stream/'+roomVariable+'?isFirstChunk='+isFirstChunk, true);
         xhr.responseType = "arraybuffer";
+
         xhr.onload = function () {
             if (xhr.status === 200) {
                 let restart = xhr.getResponseHeader("Restart");
@@ -30,7 +32,7 @@ window.addEventListener('DOMContentLoaded', (event) => {
                 if(restart === "true") {
                     if (sourceBuffer.buffered.length > 0) {
                         restartPlayer();
-                    } else fetchChunk();
+                    } else fetchChunk(false);
                 } else {
                     sourceBuffer.appendBuffer(xhr.response);
                 }
@@ -40,10 +42,11 @@ window.addEventListener('DOMContentLoaded', (event) => {
                 let delayTime = 10000//10 Seconds In MilliSeconds
 
                 setTimeout(function() {
-                    fetchChunk()
+                    fetchChunk(false)
                     }, delayTime);
             }
         };
+
         xhr.send();
     }
 

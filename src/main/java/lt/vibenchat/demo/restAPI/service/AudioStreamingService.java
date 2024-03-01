@@ -154,14 +154,14 @@ public class AudioStreamingService {
                 .name("ChalkOutlines.mp3")
                 .time(LocalDateTime.now())
                 .user(userService.getUserById(1L))
-                .room(roomService.getEntityRoomByUUID("asdasw2dasd65asd5sad4sad4"))
+                .room(roomService.getEntityRoomByUUID("$2a$10$jsnoVmm6na5dtS7OnBq9Wedo3y4HGZdkpFWsCxoKDOYKCfO1fzH6W"))
                 .build();
 
         QueueSong queueSong2 = QueueSong.builder()
-                .name("Loco.mp3")
+                .name("8Graves.mp3")
                 .time(LocalDateTime.now())
                 .user(userService.getUserById(6L))
-                .room(roomService.getEntityRoomByUUID("asdasw2dasd65asd5sad4sad4"))
+                .room(roomService.getEntityRoomByUUID("$2a$10$jsnoVmm6na5dtS7OnBq9Wedo3y4HGZdkpFWsCxoKDOYKCfO1fzH6W"))
                 .build();
 
         queueSongService.addSongToQueue(queueSong);
@@ -179,11 +179,15 @@ public class AudioStreamingService {
         final var timePassedSeconds = Duration.between(currentSongTime, LocalDateTime.now()).toSeconds();
         long fileSecondsLength = audioFileLengthSeconds(currentSong);
 
-        if(isFirstChunk && timePassedSeconds > 10 && timePassedSeconds < fileSecondsLength) {
+        if(timePassedSeconds >= fileSecondsLength) return 0L;
+
+        if(isFirstChunk && timePassedSeconds > 10) {
             return (timePassedSeconds * BITRATE * 1024) / 8L;
         } else if(isFirstChunk && timePassedSeconds < 10) {
             return 0L;
         }
+
+        if(bytesRead == null) return 0L;
 
         return bytesRead;
     }

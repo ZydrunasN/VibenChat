@@ -5,11 +5,12 @@ window.addEventListener('DOMContentLoaded', (event) => {
     let roomVariable = window.location.pathname.split("/")[2];
     let sourceBuffer;
 
+    const DELAY_TIME = 10000;
+
     audioPlayer.src = URL.createObjectURL(mediaSource);
     audioPlayer.volume = 0.05;
 
     mediaSource.addEventListener('sourceopen', function() {
-        console.log("sourceopen event is triggered")
         sourceBuffer = mediaSource.addSourceBuffer('audio/mpeg');
         fetchChunk(true);
         audioPlayer.play();
@@ -39,11 +40,10 @@ window.addEventListener('DOMContentLoaded', (event) => {
 
             } else if (xhr.status === 204) {
                 if (sourceBuffer.buffered.length > 0) restartPlayer();
-                let delayTime = 10000//10 Seconds In MilliSeconds
 
                 setTimeout(function() {
                     fetchChunk(false)
-                    }, delayTime);
+                    }, DELAY_TIME);
             }
         };
 
@@ -51,10 +51,9 @@ window.addEventListener('DOMContentLoaded', (event) => {
     }
 
     function restartPlayer() {
-        sourceBuffer.remove(0, Number.POSITIVE_INFINITY);
+        mediaSource.removeSourceBuffer(sourceBuffer)
         audioPlayer.pause();
         audioPlayer.removeAttribute("src")
-        audioPlayer.load();
         audioPlayer.src = URL.createObjectURL(mediaSource);
     }
 });

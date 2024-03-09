@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html" lang="en">
+<head th:replace="~{/fragments/layout:: head}"></head>
+<body>
+<header th:replace="~{/fragments/layout:: header}"></header>
+
+<main class="container-xxl px-4 cont">
+    <div class="main-w3layouts wrapper">
+        <div class="main-agileinfo">
+            <div class="agileits-top">
+                <form method="post" th:action="@{/register}" th:object="${registerUserDto}">
+
+                    <input class="text" type="text" th:field="*{username}" placeholder="Username" required="">
+                    <span th:if="${#fields.hasErrors('username')}" th:errors="*{username}" th:errorclass="form-error"></span>
+
+                    <input class="text email" type="email" th:field="*{email}" placeholder="Email" required="">
+                    <span th:if="${#fields.hasErrors('email')}" th:errors="*{email}" th:errorclass="form-error"></span>
+
+                    <input class="text" type="password" th:field="*{password}" placeholder="Password" required="">
+                    <span th:if="${#fields.hasErrors('password')}" th:errors="*{password}" th:errorclass="form-error"></span>
+
+                    <div class="pass">
+                        <input class="text" type="password" th:field="*{confirmPassword}" placeholder="Confirm Password" required="">
+                        <span th:if="${#fields.hasErrors('global')}" th:errors="*{global}" th:errorclass="form-error"></span>
+                    </div>
+
+                    <div class="wthree-text">
+                        <label class="anim">
+                            <input type="checkbox" class="checkbox" required="">
+                            <span>I Agree To The Terms & Conditions</span>
+                        </label>
+                        <div class="clear"> </div>
+                    </div>
+                    <input type="submit" value="SIGNUP">
+                </form>
+                <p>Already have an Account? <a th:href="@{/login}"> Login Now!</a></p>
+            </div>
+        </div>
+        <!-- copyright -->
+        <div class="colorlibcopy-agile">
+            <p>© 2018 Colorlib Signup Form. All rights reserved | Design by <a href="https://colorlib.com/" target="_blank">Colorlib</a></p>
+        </div>
+        <!-- //copyright -->
+        <ul class="colorlib-bubbles">
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+        </ul>
+    </div>
+</main>
+</body>
+</html>

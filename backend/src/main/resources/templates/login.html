@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html" lang="en">
+<head th:replace="~{/fragments/layout:: head}"></head>
+<body>
+<header th:replace="~{/fragments/layout:: header}"></header>
+
+<main class="container-xxl px-4 cont">
+    <div class="main-w3layouts wrapper">
+        <div class="main-agileinfo">
+            <div class="agileits-top login">
+                <form method="post" th:action="@{/login}" th:object="${loginUserDto}">
+                    <input class="text" type="text" th:field="*{username}" placeholder="Username" required="">
+                    <span th:if="${#fields.hasErrors('username')}" th:errors="*{username}" th:errorclass="form-error"></span>
+                    <input class="text" type="password" th:field="*{password}" placeholder="Password" required="">
+                    <span th:if="${#fields.hasErrors('password')}" th:errors="*{password}" th:errorclass="form-error"></span>
+                    <input type="submit" value="LOGIN">
+                </form>
+                <p>Don't have an Account? <a th:href="@{/register}"> Sign up!</a></p>
+            </div>
+        </div>
+        <!-- copyright -->
+        <div class="colorlibcopy-agile">
+            <p>© 2018 Colorlib Signup Form. All rights reserved | Design by <a href="https://colorlib.com/" target="_blank">Colorlib</a></p>
+        </div>
+        <!-- //copyright -->
+        <ul class="colorlib-bubbles">
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+        </ul>
+    </div>
+</main>
+</body>
+</html>

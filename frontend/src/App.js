@@ -1,9 +1,9 @@
 import './App.css';
-import {MainComponent} from "./components/MainComponent";
 import {createTheme, ThemeProvider} from "@mui/material/styles";
 import CssBaseline from "@mui/material/CssBaseline";
 import {Box, Container} from "@mui/material";
 import {HeaderComponent} from "./components/HeaderComponent";
+import {HomePage} from "./pages/HomePage";
 
 const darkTheme = createTheme({
     palette: {
@@ -19,7 +19,7 @@ function App() {
                   <CssBaseline/>
                   <HeaderComponent/>
                   <Box sx={{ m: '1rem' }}/>
-                  <MainComponent/>
+                  <HomePage/>
               </Container>
           </ThemeProvider>
       </div>
